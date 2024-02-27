@@ -13,47 +13,49 @@ struct SmallEvent: View {
     let event: Event
     var body: some View {
         HStack {
-            VStack(alignment: .leading, spacing: 7.5) {
+            VStack(alignment: .leading, spacing: 0) {
                 VStack(alignment: .leading, spacing: 7.5) {
                     Text(event.title)
-                        .font(.system(size: 14, weight: .semibold))
-                        .foregroundColor(.onSurface)
+                        .apply(style: TextStyles.onSurfaceBodySemibold)
                         .lineLimit(3)
-                    Text(event.course?.englishName ?? "")
-                        .lineLimit(3)
-                        .truncationMode(.tail)
-                        .font(.system(size: 12))
-                        .foregroundColor(.onSurface.opacity(0.7))
                 }
                 Spacer()
-                if let timeFrom = event.from.convertToHoursAndMinutesISOString(),
-                   let timeTo = event.to.convertToHoursAndMinutesISOString()
-                {
+                VStack (alignment: .leading, spacing: 7.5) {
                     HStack {
                         Image(systemName: "mappin.and.ellipse")
                             .font(.system(size: 12))
                             .foregroundColor(.onSurface)
                         Text(event.locations.first?.locationId.capitalized ?? NSLocalizedString("Unknown", comment: ""))
-                            .font(.system(size: 12, weight: .semibold))
-                            .foregroundColor(.onSurface)
+                            .apply(style: TextStyles.onSurfaceCaptionMediumSemibold)
                     }
-                    HStack {
-                        Circle()
-                            .foregroundColor(event.isSpecial ? Color.red : event.course?.color.toColor())
-                            .frame(width: 7, height: 7)
+                    if let date = dateFormatterEvent.date(from: event.from) {
                         HStack {
-                            Text("\(timeFrom)")
-                                .font(.system(size: 12, weight: .semibold))
+                            Image(systemName: "calendar")
+                                .font(.system(size: 12))
                                 .foregroundColor(.onSurface)
-                            Image(systemName: "arrow.right")
-                                .font(.system(size: 8, weight: .semibold))
-                                .foregroundColor(.onSurface)
-                            Text("\(timeTo)")
-                                .font(.system(size: 12, weight: .semibold))
-                                .foregroundColor(.onSurface)
+                            Text(dateFormatterSemi.string(from: date))
+                                .apply(style: TextStyles.onSurfaceCaptionMediumSemibold)
+                            }
                         }
+                    if let timeFrom = event.from.convertToHoursAndMinutesISOString(),
+                       let timeTo = event.to.convertToHoursAndMinutesISOString()
+                    {
+                        HStack {
+                            Circle()
+                                .foregroundColor(event.isSpecial ? Color.red : event.course?.color.toColor())
+                                .frame(width: 7, height: 7)
+                            HStack {
+                                Text("\(timeFrom)")
+                                    .apply(style: TextStyles.onSurfaceCaptionMediumSemibold)
+                                Image(systemName: "arrow.right")
+                                    .font(.system(size: 8, weight: .semibold))
+                                    .foregroundColor(.onSurface)
+                                Text("\(timeTo)")
+                                    .apply(style: TextStyles.onSurfaceCaptionMediumSemibold)
+                            }
                         }
                     }
+                }
             }
             Spacer()
         }

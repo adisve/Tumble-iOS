@@ -14,7 +14,7 @@ struct SheetTitle: View {
         HStack {
             Spacer()
             Text(title)
-                .sheetTitle()
+                .apply(style: TextStyles.sheetTitle)
             Spacer()
         }
         .padding(.bottom, 15)

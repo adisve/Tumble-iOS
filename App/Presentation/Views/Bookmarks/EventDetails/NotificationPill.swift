@@ -28,9 +28,8 @@ struct NotificationPill: View {
                         .font(.system(size: 14))
                         .foregroundColor(.onSurface)
                     Text(title)
-                        .font(.system(size: 14, weight: .semibold))
+                        .apply(style: TextStyles.onSurfaceBodySemibold)
                         .multilineTextAlignment(.leading)
-                        .foregroundColor(.onSurface)
                 case .loading:
                     CustomProgressIndicator()
                 }

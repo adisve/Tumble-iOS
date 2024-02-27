@@ -22,12 +22,18 @@ struct WeekEvent: View {
                         .foregroundColor(event.isSpecial ? Color.red : color)
                         .frame(width: 7, height: 7)
                         .padding(.trailing, 0)
-                    Text("\(from) - \(to)")
-                        .font(.system(size: 16, weight: .semibold))
-                        .foregroundColor(.onSurface)
+                    HStack (spacing: 5) {
+                        Text("\(from)")
+                            .apply(style: TextStyles.onSurfaceBodySemibold)
+                        Image(systemName: "arrow.right")
+                            .font(.system(size: 8, weight: .semibold))
+                            .foregroundColor(.onSurface)
+                        Text("\(to)")
+                            .apply(style: TextStyles.onSurfaceBodySemibold)
+                    }
                     Spacer()
-                    Text(event.course?.englishName ?? NSLocalizedString("No title", comment: ""))
-                        .font(.system(size: 16, weight: .regular))
+                    Text(event.title)
+                        .font(.system(size: 14, weight: .regular))
                         .foregroundColor(.onSurface)
                 }
                 .padding()

@@ -57,3 +57,15 @@ extension LabelStyleConfiguration.Title {
             .opacity(style.opacity ?? 1.0)
     }
 }
+
+extension TextField {
+    func apply(style: TextStyle) -> some View {
+        self
+            .font(style.font)
+            .foregroundColor(style.color)
+            .lineSpacing(style.lineSpacing ?? 0)
+            .multilineTextAlignment(style.multilineTextAlignment ?? .leading)
+            .padding(style.padding ?? EdgeInsets())
+            .opacity(style.opacity ?? 1.0)
+    }
+}

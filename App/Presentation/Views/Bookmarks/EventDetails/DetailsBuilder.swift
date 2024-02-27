@@ -26,9 +26,7 @@ struct DetailsBuilder<Content: View>: View {
                         .font(.system(size: 17))
                         .foregroundColor(.onSurface)
                     Text(title)
-                        .font(.system(size: 17))
-                        .bold()
-                        .foregroundColor(.onBackground)
+                        .apply(style: TextStyles.onBackgroundTitleSemibold)
                 }
                 .padding(.bottom, 5)
                 VStack(alignment: .leading) {

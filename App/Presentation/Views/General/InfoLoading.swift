@@ -14,7 +14,7 @@ struct InfoLoading: View {
             CustomProgressIndicator()
                 .padding(.bottom, 15)
             Text(title)
-                .infoBodyMedium()
+                .apply(style: TextStyles.onBackgroundBodyMedium)
                 .multilineTextAlignment(.center)
         }
         .frame(

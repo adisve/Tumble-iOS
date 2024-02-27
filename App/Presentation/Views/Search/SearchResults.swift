@@ -19,7 +19,7 @@ struct SearchResults: View {
         VStack {
             HStack {
                 Text(String(format: NSLocalizedString("%@ results", comment: ""), String(numberOfSearchResults)))
-                    .searchResultsField()
+                    .apply(style: TextStyles.searchResultsField)
                 Spacer()
             }
             ScrollView(showsIndicators: false) {

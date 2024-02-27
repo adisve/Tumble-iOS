@@ -41,32 +41,32 @@ struct CompactEventButtonLabel: View {
                     Spacer()
                     if event.isSpecial {
                         Image(systemName: "person.crop.circle.badge.exclamationmark")
-                            .font(.system(size: 15))
+                            .font(.system(size: 12))
                             .foregroundColor(.onSurface.opacity(0.7))
                     }
                 }
                 HStack {
                     Image(systemName: "mappin.and.ellipse")
-                        .font(.system(size: 15))
+                        .font(.system(size: 12))
                         .foregroundColor(.onSurface.opacity(0.7))
                     Text(event.locations.first?.locationId.capitalized ?? NSLocalizedString("Unknown", comment: ""))
-                        .apply(style: TextStyles.cardBodyDimmed)
+                        .apply(style: TextStyles.onSurfaceCaptionMediumOpaque)
                 }
                 HStack {
                     Image(systemName: "person.2")
-                        .font(.system(size: 15))
+                        .font(.system(size: 12))
                         .foregroundColor(.onSurface.opacity(0.7))
                     if let teacher = event.teachers.first {
                         if !teacher.firstName.isEmpty && !teacher.lastName.isEmpty {
                             Text("\(teacher.firstName) \(teacher.lastName)")
-                                .apply(style: TextStyles.cardBodyDimmed)
+                                .apply(style: TextStyles.onSurfaceCaptionMediumOpaque)
                         } else {
                             Text(NSLocalizedString("No teachers listed", comment: ""))
-                                .apply(style: TextStyles.cardBodyDimmed)
+                                .apply(style: TextStyles.onSurfaceCaptionMediumOpaque)
                         }
                     } else {
                         Text(NSLocalizedString("No teachers listed", comment: ""))
-                            .apply(style: TextStyles.cardBodyDimmed)
+                            .apply(style: TextStyles.onSurfaceCaptionMediumOpaque)
                     }
                 }
             }

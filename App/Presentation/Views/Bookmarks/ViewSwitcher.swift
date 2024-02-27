@@ -28,7 +28,7 @@ struct ViewSwitcher: View {
                         }
                         HStack {
                             Text(NSLocalizedString(type.name, comment: ""))
-                                .font(.system(size: 14, weight: .bold))
+                                .apply(style: TextStyles.onSurfaceBodySemibold)
                         }
                         .frame(minWidth: 0, maxWidth: .infinity)
                         .padding(.vertical, 5)

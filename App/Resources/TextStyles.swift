@@ -32,6 +32,16 @@ struct TextStyles {
         color: .onBackground
     )
     
+    static let onSurfaceHeaderSemibold = TextStyle(
+        font: Fonts.headerSmall,
+        color: .onSurface
+    )
+    
+    static let onSurfaceTitle = TextStyle(
+        font: Fonts.title,
+        color: .onSurface
+    )
+    
     static let onSurfaceBody = TextStyle(
         font: Fonts.body,
         color: .onSurface
@@ -68,6 +78,11 @@ struct TextStyles {
         color: .onBackground
     )
     
+    static let onBackgroundHeader = TextStyle(
+        font: Fonts.headerSmall,
+        color: .onBackground
+    )
+    
     static let onBackgroundHeaderLargeSemibold = TextStyle(
         font: Fonts.headerLargeSemiBold,
         color: .onBackground
@@ -88,7 +103,6 @@ struct TextStyles {
         color: .onBackground
     )
     
-    
     static let primaryTitleSemibold = TextStyle(
         font: Fonts.titleSemiBold,
         color: .primary
@@ -105,9 +119,25 @@ struct TextStyles {
         opacity: 0.7
     )
     
+    static let primaryBodySemibold = TextStyle(
+        font: Fonts.bodySemiBold,
+        color: .primary
+    )
+    
     static let schoolNamePicker = TextStyle(
         font: Fonts.body,
         color: .onBackground
+    )
+    
+    static let onSurfaceCaptionMediumSemibold = TextStyle(
+        font: Fonts.captionMediumSemiBold,
+        color: .onSurface
+    )
+    
+    static let onSurfaceCaptionMediumOpaque = TextStyle(
+        font: Fonts.captionMedium,
+        color: .onSurface,
+        opacity: 0.7
     )
     
     static let captionDimmed = TextStyle(

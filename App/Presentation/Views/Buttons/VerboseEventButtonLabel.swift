@@ -9,21 +9,24 @@ import SwiftUI
 
 struct VerboseEventButtonLabel: View {
     let event: Event
-    
+
     var body: some View {
         HStack {
-            VStack(alignment: .leading, spacing: 20) {
+            VStack(alignment: .leading, spacing: 10) {
                 VStack(alignment: .leading, spacing: 2) {
                     Text(event.title)
                         .apply(style: TextStyles.cardTitle)
+                        .lineLimit(2)
+                        .fixedSize(horizontal: false, vertical: true)
                     Text(event.course?.englishName ?? "")
                         .apply(style: TextStyles.cardBodyDimmed)
                         .lineLimit(1)
                         .truncationMode(.tail)
                 }
+                Spacer()
                 HStack {
                     Image(systemName: "person.2")
-                        .font(.system(size: 15))
+                        .font(.system(size: 14))
                         .foregroundColor(.onSurface.opacity(0.7))
                     if let teacher = event.teachers.first {
                         if !teacher.firstName.isEmpty && !teacher.lastName.isEmpty {
@@ -41,7 +44,7 @@ struct VerboseEventButtonLabel: View {
                 HStack {
                     HStack {
                         Image(systemName: "mappin.and.ellipse")
-                            .font(.system(size: 15))
+                            .font(.system(size: 14))
                             .foregroundColor(.onSurface)
                         Text(event.locations.first?.locationId.capitalized ?? NSLocalizedString("Unknown", comment: ""))
                             .apply(style: TextStyles.cardBody)

@@ -12,9 +12,9 @@ struct DayResponseHeader: View {
     var body: some View {
         HStack(spacing: 0) {
             Text(NSLocalizedString(localizedKey(for: day.name), comment: ""))
-                .dayHeader()
+                .apply(style: TextStyles.dayHeader)
             Text(day.date)
-                .dayHeader()
+                .apply(style: TextStyles.dayHeader)
             Rectangle()
                 .fill(Color.onBackground)
                 .offset(x: 7.5)

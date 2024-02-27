@@ -39,8 +39,7 @@ struct BookmarkCalendarView: View {
                 if selectedDateEvents.isEmpty {
                     HStack {
                         Text(NSLocalizedString("No events for this date", comment: ""))
-                            .foregroundColor(.onBackground)
-                            .font(.system(size: 20, weight: .semibold))
+                            .apply(style: TextStyles.onBackgroundHeaderSemibold)
                         Spacer()
                     }
                     .padding([.top, .leading], 15)

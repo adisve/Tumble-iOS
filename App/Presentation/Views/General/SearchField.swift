@@ -24,7 +24,7 @@ struct SearchField: View {
             TextField(NSLocalizedString(
                 title, comment: ""
             ), text: $searchBarText)
-                .searchBoxText()
+                .apply(style: TextStyles.searchBarTitle)
                 .onTapGesture {
                     withAnimation(.spring()) {
                         self.searching = true

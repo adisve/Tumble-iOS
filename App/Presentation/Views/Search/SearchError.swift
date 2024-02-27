@@ -15,8 +15,7 @@ struct SearchError: View {
                 .font(.system(size: 24))
                 .padding(.bottom, 20)
             Text(NSLocalizedString("Looks like something went wrong", comment: ""))
-                .font(.headline)
-                .foregroundColor(.onBackground)
+                .apply(style: TextStyles.onBackgroundHeader)
                 .padding(.bottom, 25)
             Spacer()
         }

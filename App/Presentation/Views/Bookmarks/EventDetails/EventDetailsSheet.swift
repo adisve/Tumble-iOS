@@ -40,7 +40,7 @@ struct EventDetailsSheet: View {
         )
         .overlay(
             Text(NSLocalizedString("Details", comment: ""))
-                .sheetTitle()
+                .apply(style: TextStyles.sheetTitle)
             ,alignment: .top
         )
     }

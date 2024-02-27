@@ -24,7 +24,7 @@ struct VerboseEventResponseButtonLabel: View {
                 }
                 HStack {
                     Image(systemName: "person.2")
-                        .font(.system(size: 15))
+                        .font(.system(size: 14))
                         .foregroundColor(.onSurface.opacity(0.7))
                     if let teacher = event.teachers.first {
                         if !teacher.firstName.isEmpty && !teacher.lastName.isEmpty {
@@ -42,7 +42,7 @@ struct VerboseEventResponseButtonLabel: View {
                 HStack {
                     HStack {
                         Image(systemName: "mappin.and.ellipse")
-                            .font(.system(size: 15))
+                            .font(.system(size: 14))
                             .foregroundColor(.onSurface)
                         Text(event.locations.first?.id.capitalized ?? NSLocalizedString("Unknown", comment: ""))
                             .apply(style: TextStyles.cardBody)

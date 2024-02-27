@@ -29,8 +29,7 @@ struct BookmarkButton: View {
                             .font(.system(size: 16))
                             .foregroundColor(.onPrimary)
                         Text(NSLocalizedString("Remove", comment: ""))
-                            .font(.system(size: 16, weight: .semibold))
-                            .foregroundColor(.onPrimary)
+                            .apply(style: TextStyles.onPrimaryTitleSemibold)
                     }
                 case .notSaved:
                     HStack(spacing: 10) {
@@ -38,8 +37,7 @@ struct BookmarkButton: View {
                             .font(.system(size: 16))
                             .foregroundColor(.onPrimary)
                         Text(NSLocalizedString("Save", comment: ""))
-                            .font(.system(size: 16, weight: .semibold))
-                            .foregroundColor(.onPrimary)
+                            .apply(style: TextStyles.onPrimaryTitleSemibold)
                     }
                 }
             }

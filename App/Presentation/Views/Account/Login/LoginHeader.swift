@@ -11,9 +11,10 @@ struct LoginHeader: View {
     var body: some View {
         VStack(alignment: .center, spacing: 10) {
             Text(NSLocalizedString("Log in", comment: ""))
-                .infoHeaderMedium()
+                .apply(style: TextStyles.infoHeaderMedium)
             Text(NSLocalizedString("Please log in to continue", comment: ""))
-                .infoBodyMedium(opacity: 0.75)
+                .apply(style: TextStyles.onBackgroundBodyMedium)
+                .opacity(0.75)
         }
         .frame(maxWidth: .infinity, alignment: .center)
         .padding(.bottom, 35)

@@ -19,7 +19,7 @@ struct Info: View {
                     .padding(.bottom, 15)
             }
             Text(title)
-                .infoBodyMedium()
+                .apply(style: TextStyles.onBackgroundBodyMedium)
                 .multilineTextAlignment(.center)
         }
         .frame(

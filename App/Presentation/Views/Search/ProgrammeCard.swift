@@ -18,7 +18,7 @@ struct ProgrammeCard: View {
             HStack {
                 VStack(alignment: .leading) {
                     Text(programme.title)
-                        .programmeTitle()
+                        .apply(style: TextStyles.programmeTitle)
                     HStack {
                         if universityImage != nil {
                             universityImage!
@@ -28,7 +28,7 @@ struct ProgrammeCard: View {
                                 .cornerRadius(2.5)
                         }
                         Text(programme.subtitle.trimmingCharacters(in: .whitespaces))
-                            .programmeSubTitle()
+                            .apply(style: TextStyles.programmeBody)
                     }
                 }
                 Spacer()

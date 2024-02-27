@@ -26,6 +26,9 @@ struct Fonts {
     static let captionMedium = Font.system(size: baseCaptionSize, weight: weightMedium)
     static let captionSemiBold = Font.system(size: baseCaptionSize, weight: weightSemibold)
     
+    static let captionMediumMedium = Font.system(size: baseCaptionSize + 2, weight: weightMedium)
+    static let captionMediumSemiBold = Font.system(size: baseCaptionSize + 2, weight: weightSemibold)
+    
     static let title = Font.system(size: baseTitleSize, weight: weightRegular)
     static let titleMedium = Font.system(size: baseTitleSize, weight: weightMedium)
     static let titleSemiBold = Font.system(size: baseTitleSize, weight: weightSemibold)

@@ -20,9 +20,8 @@ struct ColorPickerPill: View {
                     .font(.system(size: 14))
                     .foregroundColor(.onSurface)
                 Text(NSLocalizedString("Color", comment: ""))
-                    .font(.system(size: 14, weight: .semibold))
+                    .apply(style: TextStyles.onSurfaceBodySemibold)
                     .multilineTextAlignment(.leading)
-                    .foregroundColor(.onSurface)
             }
             .padding(.all, 10)
         })
