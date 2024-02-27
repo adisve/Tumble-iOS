@@ -15,13 +15,11 @@ struct NextClass: View {
             HStack {
                 if let nextClass = nextClass {
                     Text(nextClass.from.formatDate() ?? "")
-                        .font(.system(size: 16, weight: .medium))
-                        .foregroundColor(.gray)
+                        .apply(style: TextStyles.mediumBodyGray)
                 }
                 Spacer()
                 Text(NSLocalizedString("Next class", comment: ""))
-                    .font(.system(size: 18, weight: .semibold))
-                    .foregroundColor(.onBackground)
+                    .apply(style: TextStyles.onBackgroundTitleSemibold)
             }
             if let nextClass = nextClass, let course = nextClass.course {
                 let color: Color = course.color.toColor()
@@ -31,8 +29,7 @@ struct NextClass: View {
                     .padding(.bottom, 10)
             } else {
                 Text(NSLocalizedString("No upcoming class", comment: ""))
-                    .font(.system(size: 16))
-                    .foregroundColor(.onBackground)
+                    .apply(style: TextStyles.onBackgroundTitleSemibold)
             }
         }
         .frame(maxWidth: .infinity, minHeight: 100)

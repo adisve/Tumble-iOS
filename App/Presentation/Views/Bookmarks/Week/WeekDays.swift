@@ -15,8 +15,7 @@ struct WeekDays: View {
         Section(
             header: HStack {
                 Text("\(dateFormatterDay.string(from: weekDayDate)) \(dateFormatterDayMonth.string(from: weekDayDate))".capitalized)
-                    .foregroundColor(.onBackground)
-                    .font(.system(size: 18, weight: .semibold))
+                    .apply(style: TextStyles.onBackgroundTitleSemibold)
                 Rectangle()
                     .fill(Color.onBackground)
                     .offset(x: 7.5)

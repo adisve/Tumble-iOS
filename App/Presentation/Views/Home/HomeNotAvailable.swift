@@ -12,13 +12,11 @@ struct HomeNotAvailable: View {
         VStack(alignment: .center) {
             VStack(alignment: .leading, spacing: 20) {
                 Text(NSLocalizedString("Everything looks good for this week", comment: ""))
-                    .font(.system(size: 30, weight: .semibold))
-                    .foregroundColor(.onBackground)
+                    .apply(style: TextStyles.onBackgroundHeaderLargeSemibold)
                     .padding(.trailing, 10)
                 
                 Text(NSLocalizedString("Looks like you don't have any classes or exams in the coming week. Yay!", comment: ""))
-                    .font(.system(size: 15, weight: .medium))
-                    .foregroundColor(.onBackground)
+                    .apply(style: TextStyles.onBackgroundBodyMedium)
                     .padding(.trailing, 25)
             }
             Spacer()

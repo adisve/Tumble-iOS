@@ -21,8 +21,7 @@ struct WeekPage: View {
                 HStack {
                     Spacer()
                     Text(String(format: NSLocalizedString("w. %@", comment: ""), "\(weekOfYear)"))
-                        .font(.system(size: 22, weight: .semibold))
-                        .foregroundColor(.onBackground)
+                        .apply(style: TextStyles.onBackgroundHeaderSemibold)
                 }
 
                 let daysForWeek = weekDays.normalizedToWeekDays()
@@ -30,8 +29,7 @@ struct WeekPage: View {
                 if weekDays.isEmpty {
                     VStack {
                         Text(NSLocalizedString("No events for this week..", comment: ""))
-                            .foregroundColor(.onBackground)
-                            .infoBodyMedium()
+                            .apply(style: TextStyles.onBackgroundBodyMedium)
                         Image("GirlRelaxing")
                             .resizable()
                             .scaledToFit()

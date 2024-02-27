@@ -16,18 +16,15 @@ struct CompactEventButtonLabel: View {
             if let timeFrom = event.from.convertToHoursAndMinutesISOString(),
                let timeTo = event.to.convertToHoursAndMinutesISOString() {
                 HStack {
-                    
                     VStack (alignment: .center, spacing: 0) {
                         Text("\(timeFrom)")
-                            .font(.system(size: 14, weight: .semibold))
-                            .foregroundColor(.onSurface)
+                            .apply(style: TextStyles.cardBody)
                         Image(systemName: "arrow.down")
                             .font(.system(size: 10, weight: .semibold))
                             .foregroundColor(.onSurface)
                             .padding(.vertical, 7.5)
                         Text("\(timeTo)")
-                            .font(.system(size: 14, weight: .semibold))
-                            .foregroundColor(.onSurface)
+                            .apply(style: TextStyles.cardBody)
                     }
                 }
                 .frame(width: 65)
@@ -38,8 +35,7 @@ struct CompactEventButtonLabel: View {
             VStack(alignment: .leading, spacing: 10) {
                 HStack {
                     Text(event.title)
-                        .font(.system(size: 17, weight: .medium))
-                        .foregroundColor(.onSurface)
+                        .apply(style: TextStyles.cardTitle)
                         .lineLimit(1)
                         .truncationMode(.tail)
                     Spacer()
@@ -54,8 +50,7 @@ struct CompactEventButtonLabel: View {
                         .font(.system(size: 15))
                         .foregroundColor(.onSurface.opacity(0.7))
                     Text(event.locations.first?.locationId.capitalized ?? NSLocalizedString("Unknown", comment: ""))
-                        .font(.system(size: 15))
-                        .foregroundColor(.onSurface.opacity(0.7))
+                        .apply(style: TextStyles.cardBodyDimmed)
                 }
                 HStack {
                     Image(systemName: "person.2")
@@ -64,17 +59,14 @@ struct CompactEventButtonLabel: View {
                     if let teacher = event.teachers.first {
                         if !teacher.firstName.isEmpty && !teacher.lastName.isEmpty {
                             Text("\(teacher.firstName) \(teacher.lastName)")
-                                .font(.system(size: 15))
-                                .foregroundColor(.onSurface.opacity(0.7))
+                                .apply(style: TextStyles.cardBodyDimmed)
                         } else {
                             Text(NSLocalizedString("No teachers listed", comment: ""))
-                                .font(.system(size: 15))
-                                .foregroundColor(.onSurface.opacity(0.7))
+                                .apply(style: TextStyles.cardBodyDimmed)
                         }
                     } else {
                         Text(NSLocalizedString("No teachers listed", comment: ""))
-                            .font(.system(size: 15))
-                            .foregroundColor(.onSurface.opacity(0.7))
+                            .apply(style: TextStyles.cardBodyDimmed)
                     }
                 }
             }

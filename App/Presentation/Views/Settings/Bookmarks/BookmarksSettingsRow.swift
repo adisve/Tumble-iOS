@@ -20,7 +20,7 @@ struct BookmarkSettingsRow: View {
             HStack {
                 Toggle(isOn: $schedule.toggled) {
                     Text(schedule.scheduleId)
-                        .font(.system(size: 18, weight: .regular))
+                        .apply(style: TextStyles.onSurfaceTitleSemibold)
                 }
                 .tint(.primary)
                 .onChange(of: schedule.toggled) { _ in

@@ -12,13 +12,11 @@ struct HomeNoBookmarks: View {
         VStack(alignment: .leading) {
             VStack(alignment: .leading) {
                 Text(NSLocalizedString("Looks like you don't have anything saved yet", comment: ""))
-                    .font(.system(size: 30, weight: .semibold))
-                    .foregroundColor(.onBackground)
+                    .apply(style: TextStyles.onBackgroundHeaderLargeSemibold)
                     .padding(.bottom, 20)
                     .padding(.trailing, 10)
                 Text(NSLocalizedString("Schedules are bookmarked from the search page, which you can access from the search tab.", comment: ""))
-                    .font(.system(size: 16, weight: .medium))
-                    .foregroundColor(.onBackground)
+                    .apply(style: TextStyles.onBackgroundTitleMedium)
                     .padding(.trailing, 30)
             }
             Spacer()

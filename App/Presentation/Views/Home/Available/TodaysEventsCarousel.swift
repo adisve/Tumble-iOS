@@ -16,8 +16,7 @@ struct TodaysEventsCarousel: View {
         ZStack {
             if weekEventCards.isEmpty {
                 Text(NSLocalizedString("No events for today", comment: ""))
-                    .font(.system(size: 18))
-                    .foregroundColor(.onBackground)
+                    .apply(style: TextStyles.onBackgroundTitle)
             } else {
                 ForEach(weekEventCards.indices.reversed(), id: \.self) { index in
                     CarouselCard(

@@ -30,7 +30,6 @@
 		D40E843B2981C85400C2CF2E /* Account.swift in Sources */ = {isa = PBXBuildFile; fileRef = D40E843A2981C85400C2CF2E /* Account.swift */; };
 		D40E843D2981C8B200C2CF2E /* AccountViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D40E843C2981C8B200C2CF2E /* AccountViewModel.swift */; };
 		D40F96B12A3C7F49006AD4A9 /* LoginViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D40F96B02A3C7F49006AD4A9 /* LoginViewModel.swift */; };
-		D41172B52985DA740082BB4F /* TextFieldExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = D41172B42985DA740082BB4F /* TextFieldExtensions.swift */; };
 		D41472FD29D832D500050BFF /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D41472FC29D832D500050BFF /* Preview Assets.xcassets */; };
 		D414B23429D88C1100EA8F46 /* PullToRefreshIndicator.swift in Sources */ = {isa = PBXBuildFile; fileRef = D414B23329D88C1100EA8F46 /* PullToRefreshIndicator.swift */; };
 		D41684812A9121220064A81E /* NotificationPill.swift in Sources */ = {isa = PBXBuildFile; fileRef = D41684802A9121220064A81E /* NotificationPill.swift */; };
@@ -83,7 +82,6 @@
 		D443962A29CB40C70069D66A /* ToTopButtonStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = D443962929CB40C70069D66A /* ToTopButtonStyle.swift */; };
 		D443962C29CB4D720069D66A /* ResourceLocationsList.swift in Sources */ = {isa = PBXBuildFile; fileRef = D443962B29CB4D720069D66A /* ResourceLocationsList.swift */; };
 		D443962E29CB56040069D66A /* ResourceBookingButtonStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = D443962D29CB56040069D66A /* ResourceBookingButtonStyle.swift */; };
-		D4462C3029858A280067DA65 /* TextExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4462C2F29858A280067DA65 /* TextExtensions.swift */; };
 		D4462C3229858A7D0067DA65 /* ImageExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4462C3129858A7D0067DA65 /* ImageExtensions.swift */; };
 		D447EA8D2A23612400E50A92 /* CalendarExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = D447EA8C2A23612400E50A92 /* CalendarExtension.swift */; };
 		D447EA8F2A238D0100E50A92 /* SearchPreviewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D447EA8E2A238D0100E50A92 /* SearchPreviewModel.swift */; };
@@ -243,7 +241,6 @@
 		D4E83EBA29996026002E5F88 /* PasswordField.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4E83EB929996026002E5F88 /* PasswordField.swift */; };
 		D4E83EBC299960AD002E5F88 /* UsernameField.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4E83EBB299960AD002E5F88 /* UsernameField.swift */; };
 		D4E83EBE299960E0002E5F88 /* LoginHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4E83EBD299960E0002E5F88 /* LoginHeader.swift */; };
-		D4E83EC12999649E002E5F88 /* LoginSubHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4E83EC02999649E002E5F88 /* LoginSubHeader.swift */; };
 		D4E83ECE2999B041002E5F88 /* UserOverview.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4E83ECD2999B041002E5F88 /* UserOverview.swift */; };
 		D4E83ED12999B1B1002E5F88 /* AuthManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4E83ED02999B1B1002E5F88 /* AuthManager.swift */; };
 		D4EACB3629CB99540096ADD2 /* ResourceTimeButtonStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4EACB3529CB99540096ADD2 /* ResourceTimeButtonStyle.swift */; };
@@ -261,6 +258,9 @@
 		D4F0C8032A2F9A70002F8376 /* Popup.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4F0C8022A2F9A70002F8376 /* Popup.swift */; };
 		D4F532642A2A3FF2009DC8B8 /* Notification+NameExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4F532632A2A3FF2009DC8B8 /* Notification+NameExtension.swift */; };
 		D4F631922A9F5FBF00C87F5D /* CloseButtonStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4F631912A9F5FBF00C87F5D /* CloseButtonStyle.swift */; };
+		D4F7888A2B8E0CE700EC5A80 /* Fonts.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4F788892B8E0CE700EC5A80 /* Fonts.swift */; };
+		D4F7888C2B8E136100EC5A80 /* TextStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4F7888B2B8E136100EC5A80 /* TextStyle.swift */; };
+		D4F7888E2B8E138900EC5A80 /* TextStyles.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4F7888D2B8E138900EC5A80 /* TextStyles.swift */; };
 		D4FCD14B2995AD64009D2987 /* UIColorWellExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4FCD14A2995AD64009D2987 /* UIColorWellExtension.swift */; };
 		D4FCD14E2995ADFE009D2987 /* UIColorWellHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4FCD14D2995ADFE009D2987 /* UIColorWellHelper.swift */; };
 		D4FFCC1D29EDA9A700708CC0 /* Realm in Frameworks */ = {isa = PBXBuildFile; productRef = D4FFCC1C29EDA9A700708CC0 /* Realm */; };
@@ -321,7 +321,6 @@
 		D40E843A2981C85400C2CF2E /* Account.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Account.swift; sourceTree = "<group>"; };
 		D40E843C2981C8B200C2CF2E /* AccountViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountViewModel.swift; sourceTree = "<group>"; };
 		D40F96B02A3C7F49006AD4A9 /* LoginViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewModel.swift; sourceTree = "<group>"; };
-		D41172B42985DA740082BB4F /* TextFieldExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextFieldExtensions.swift; sourceTree = "<group>"; };
 		D41472FC29D832D500050BFF /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		D414B23329D88C1100EA8F46 /* PullToRefreshIndicator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PullToRefreshIndicator.swift; sourceTree = "<group>"; };
 		D41684802A9121220064A81E /* NotificationPill.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationPill.swift; sourceTree = "<group>"; };
@@ -373,7 +372,6 @@
 		D443962929CB40C70069D66A /* ToTopButtonStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToTopButtonStyle.swift; sourceTree = "<group>"; };
 		D443962B29CB4D720069D66A /* ResourceLocationsList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResourceLocationsList.swift; sourceTree = "<group>"; };
 		D443962D29CB56040069D66A /* ResourceBookingButtonStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResourceBookingButtonStyle.swift; sourceTree = "<group>"; };
-		D4462C2F29858A280067DA65 /* TextExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextExtensions.swift; sourceTree = "<group>"; };
 		D4462C3129858A7D0067DA65 /* ImageExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageExtensions.swift; sourceTree = "<group>"; };
 		D447EA8C2A23612400E50A92 /* CalendarExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarExtension.swift; sourceTree = "<group>"; };
 		D447EA8E2A238D0100E50A92 /* SearchPreviewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchPreviewModel.swift; sourceTree = "<group>"; };
@@ -524,7 +522,6 @@
 		D4E83EB929996026002E5F88 /* PasswordField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PasswordField.swift; sourceTree = "<group>"; };
 		D4E83EBB299960AD002E5F88 /* UsernameField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UsernameField.swift; sourceTree = "<group>"; };
 		D4E83EBD299960E0002E5F88 /* LoginHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginHeader.swift; sourceTree = "<group>"; };
-		D4E83EC02999649E002E5F88 /* LoginSubHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginSubHeader.swift; sourceTree = "<group>"; };
 		D4E83ECD2999B041002E5F88 /* UserOverview.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserOverview.swift; sourceTree = "<group>"; };
 		D4E83ED02999B1B1002E5F88 /* AuthManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthManager.swift; sourceTree = "<group>"; };
 		D4EACB3529CB99540096ADD2 /* ResourceTimeButtonStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResourceTimeButtonStyle.swift; sourceTree = "<group>"; };
@@ -542,6 +539,9 @@
 		D4F0C8022A2F9A70002F8376 /* Popup.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Popup.swift; sourceTree = "<group>"; };
 		D4F532632A2A3FF2009DC8B8 /* Notification+NameExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Notification+NameExtension.swift"; sourceTree = "<group>"; };
 		D4F631912A9F5FBF00C87F5D /* CloseButtonStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CloseButtonStyle.swift; sourceTree = "<group>"; };
+		D4F788892B8E0CE700EC5A80 /* Fonts.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Fonts.swift; sourceTree = "<group>"; };
+		D4F7888B2B8E136100EC5A80 /* TextStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextStyle.swift; sourceTree = "<group>"; };
+		D4F7888D2B8E138900EC5A80 /* TextStyles.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextStyles.swift; sourceTree = "<group>"; };
 		D4FCD14A2995AD64009D2987 /* UIColorWellExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIColorWellExtension.swift; sourceTree = "<group>"; };
 		D4FCD14D2995ADFE009D2987 /* UIColorWellHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIColorWellHelper.swift; sourceTree = "<group>"; };
 		D4FFCC2129EDA9E200708CC0 /* Schedule.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Schedule.swift; sourceTree = "<group>"; };
@@ -885,6 +885,7 @@
 			children = (
 				D4D14A0D2A2EA50800D7E374 /* LabelStyles */,
 				D47A451629D74E5D008626E6 /* ButtonStyles */,
+				D4F7888B2B8E136100EC5A80 /* TextStyle.swift */,
 			);
 			path = Styles;
 			sourceTree = "<group>";
@@ -1144,6 +1145,8 @@
 			children = (
 				D4BAE61829246AA200143717 /* Schools.json */,
 				D48F0D8929367CAF0039CD0F /* Colors.swift */,
+				D4F788892B8E0CE700EC5A80 /* Fonts.swift */,
+				D4F7888D2B8E138900EC5A80 /* TextStyles.swift */,
 			);
 			path = Resources;
 			sourceTree = "<group>";
@@ -1443,7 +1446,6 @@
 				D4E83EB7299959AF002E5F88 /* LoginButton.swift */,
 				D4E83EB929996026002E5F88 /* PasswordField.swift */,
 				D4E83EB529994D5F002E5F88 /* AccountLogin.swift */,
-				D4E83EC02999649E002E5F88 /* LoginSubHeader.swift */,
 			);
 			path = Login;
 			sourceTree = "<group>";
@@ -1532,9 +1534,7 @@
 			isa = PBXGroup;
 			children = (
 				D4CD0EFE29D5B00A00AB5FD0 /* UIApplicationExtension.swift */,
-				D41172B42985DA740082BB4F /* TextFieldExtensions.swift */,
 				D4462C3129858A7D0067DA65 /* ImageExtensions.swift */,
-				D4462C2F29858A280067DA65 /* TextExtensions.swift */,
 				D40D80A529252165008CA68D /* ViewExtensions.swift */,
 				D45268D22A052FC5004F1642 /* UIImageExtension.swift */,
 			);
@@ -1730,7 +1730,6 @@
 				D4E39E372989CE27004C30DF /* Utilities.swift in Sources */,
 				D48CC5A129C7DBF90028179A /* VerboseEventButtonLabel.swift in Sources */,
 				D4D3368629F66E3900933D38 /* RealmConfig.swift in Sources */,
-				D4462C3029858A280067DA65 /* TextExtensions.swift in Sources */,
 				D4BAE5F82924636500143717 /* School.swift in Sources */,
 				D439F8A329DBAA59006332AB /* HomeNotAvailable.swift in Sources */,
 				D430F74729C654A200E30E48 /* BookmarkCalendarDetail.swift in Sources */,
@@ -1790,6 +1789,7 @@
 				D4FFCC2229EDA9E200708CC0 /* Schedule.swift in Sources */,
 				D4E83EB8299959AF002E5F88 /* LoginButton.swift in Sources */,
 				D4A550D52994755900028BCF /* BookmarkButton.swift in Sources */,
+				D4F7888A2B8E0CE700EC5A80 /* Fonts.swift in Sources */,
 				D423F6AE29F0085D00C04123 /* SchoolPill.swift in Sources */,
 				D454DECE29D3B900005BDAE3 /* BookmarksSettings.swift in Sources */,
 				D4A433BA29952A8A00BFEB7A /* EventExtension.swift in Sources */,
@@ -1821,11 +1821,11 @@
 				D43294E229E0ABC800842884 /* WeekEventCardModel.swift in Sources */,
 				D48456822A62CCA900F5B5C4 /* CloseCoverButton.swift in Sources */,
 				D4FFCC2429EDA9F000708CC0 /* Day.swift in Sources */,
+				D4F7888E2B8E138900EC5A80 /* TextStyles.swift in Sources */,
 				D40D80CA29265B98008CA68D /* Search.swift in Sources */,
 				D400F3DF29D794970050622E /* EventDetailSheetModel.swift in Sources */,
 				D41ED5502984350A009DCF8B /* Endpoint.swift in Sources */,
 				D440F40429E73BE2003E4CAA /* SearchField.swift in Sources */,
-				D41172B52985DA740082BB4F /* TextFieldExtensions.swift in Sources */,
 				D4E83EB629994D5F002E5F88 /* AccountLogin.swift in Sources */,
 				D434FDCD2B0A13B400BD2404 /* WeekPage.swift in Sources */,
 				D458605B29DCE66100B77513 /* SheetTitle.swift in Sources */,
@@ -1881,7 +1881,6 @@
 				D4462C3229858A7D0067DA65 /* ImageExtensions.swift in Sources */,
 				D46ABF14298443AC00B059F6 /* ViewModelFactory.swift in Sources */,
 				D460764C292AEAEC00DE9590 /* BookmarkListView.swift in Sources */,
-				D4E83EC12999649E002E5F88 /* LoginSubHeader.swift in Sources */,
 				D416D33929CA7C5B009A4FB8 /* CalendarViewRepresentable.swift in Sources */,
 				D458606129DCF22C00B77513 /* NewsItemCard.swift in Sources */,
 				D439F8A529DBAA71006332AB /* HomeNoBookmarks.swift in Sources */,
@@ -1911,6 +1910,7 @@
 				D483CC392A9DF21C0088C54A /* SearchMenuActionStyle.swift in Sources */,
 				D4E491F629EDC59300E674CA /* DayResponseExtension.swift in Sources */,
 				D45338FF2929805100198411 /* StringExtensions.swift in Sources */,
+				D4F7888C2B8E136100EC5A80 /* TextStyle.swift in Sources */,
 				D41ED54C29843469009DCF8B /* Response.swift in Sources */,
 				D400F3E529D796A00050622E /* DateFormatters.swift in Sources */,
 				D4E39E3C2989D1B5004C30DF /* EventDetailsCard.swift in Sources */,

@@ -12,13 +12,11 @@ struct HomeError: View {
         VStack(alignment: .leading) {
             VStack(alignment: .leading, spacing: 20) {
                 Text(NSLocalizedString("Something went wrong", comment: ""))
-                    .font(.system(size: 30, weight: .semibold))
-                    .foregroundColor(.onBackground)
+                    .apply(style: TextStyles.onBackgroundHeaderLargeSemibold)
                     .padding(.trailing, 10)
                 
                 Text(NSLocalizedString("We experienced an issue when trying to find your schedules. Try again later", comment: ""))
-                    .font(.system(size: 15, weight: .medium))
-                    .foregroundColor(.onBackground)
+                    .apply(style: TextStyles.onBackgroundBodyMedium)
                     .padding(.trailing, 25)
             }
             Spacer()

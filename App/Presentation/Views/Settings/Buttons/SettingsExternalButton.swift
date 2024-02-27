@@ -48,12 +48,10 @@ struct SettingsExternalButton: View {
                 Spacer()
                 if let current = current {
                     Text(current)
-                        .font(.system(size: 18, weight: .regular))
-                        .foregroundColor(.onSurface.opacity(0.4))
-                        .padding(.trailing, 10)
+                        .apply(style: TextStyles.settingsNavCurrent)
                 }
                 Image(systemName: trailingIcon)
-                    .font(.system(size: 15, weight: .medium))
+                    .font(.system(size: 14, weight: .medium))
                     .foregroundColor(.onSurface.opacity(0.4))
             }
         })

@@ -15,13 +15,11 @@ struct VerboseEventButtonLabel: View {
             VStack(alignment: .leading, spacing: 20) {
                 VStack(alignment: .leading, spacing: 2) {
                     Text(event.title)
-                        .font(.system(size: 17, weight: .semibold))
-                        .foregroundColor(.onSurface)
+                        .apply(style: TextStyles.cardTitle)
                     Text(event.course?.englishName ?? "")
+                        .apply(style: TextStyles.cardBodyDimmed)
                         .lineLimit(1)
                         .truncationMode(.tail)
-                        .font(.system(size: 15))
-                        .foregroundColor(.onSurface.opacity(0.7))
                 }
                 HStack {
                     Image(systemName: "person.2")
@@ -30,17 +28,14 @@ struct VerboseEventButtonLabel: View {
                     if let teacher = event.teachers.first {
                         if !teacher.firstName.isEmpty && !teacher.lastName.isEmpty {
                             Text("\(teacher.firstName) \(teacher.lastName)")
-                                .font(.system(size: 15))
-                                .foregroundColor(.onSurface.opacity(0.7))
+                                .apply(style: TextStyles.cardBodyDimmed)
                         } else {
                             Text(NSLocalizedString("No teachers listed", comment: ""))
-                                .font(.system(size: 15))
-                                .foregroundColor(.onSurface.opacity(0.7))
+                                .apply(style: TextStyles.cardBodyDimmed)
                         }
                     } else {
                         Text(NSLocalizedString("No teachers listed", comment: ""))
-                            .font(.system(size: 15))
-                            .foregroundColor(.onSurface.opacity(0.7))
+                            .apply(style: TextStyles.cardBodyDimmed)
                     }
                 }
                 HStack {
@@ -49,8 +44,7 @@ struct VerboseEventButtonLabel: View {
                             .font(.system(size: 15))
                             .foregroundColor(.onSurface)
                         Text(event.locations.first?.locationId.capitalized ?? NSLocalizedString("Unknown", comment: ""))
-                            .font(.system(size: 15, weight: .semibold))
-                            .foregroundColor(.onSurface)
+                            .apply(style: TextStyles.cardBody)
                     }
                     Spacer()
                     if let timeFrom = event.from.convertToHoursAndMinutesISOString(),
@@ -62,14 +56,12 @@ struct VerboseEventButtonLabel: View {
                                 .frame(width: 7, height: 7)
                             HStack {
                                 Text("\(timeFrom)")
-                                    .font(.system(size: 14, weight: .semibold))
-                                    .foregroundColor(.onSurface)
+                                    .apply(style: TextStyles.cardBody)
                                 Image(systemName: "arrow.right")
                                     .font(.system(size: 10, weight: .semibold))
                                     .foregroundColor(.onSurface)
                                 Text("\(timeTo)")
-                                    .font(.system(size: 14, weight: .semibold))
-                                    .foregroundColor(.onSurface)
+                                    .apply(style: TextStyles.cardBody)
                             }
                         }
                     }

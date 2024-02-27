@@ -23,8 +23,7 @@ struct News: View {
                         String(format: NSLocalizedString("News from us (%@)", comment: ""),
                                news != nil ? String(news!.count) : "0")
                     )
-                    .font(.system(size: 16, weight: .semibold))
-                    .foregroundColor(.onPrimary)
+                    .apply(style: TextStyles.onPrimaryTitleSemibold)
                     Spacer()
                     Image(systemName: "newspaper")
                         .font(.system(size: 18, weight: .medium))

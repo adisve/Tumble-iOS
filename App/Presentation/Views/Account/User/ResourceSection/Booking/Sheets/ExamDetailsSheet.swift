@@ -19,27 +19,23 @@ struct ExamDetailsSheet: View {
         VStack {
             DetailsBuilder(title: NSLocalizedString("Title", comment: ""), image: "a.magnify", content: {
                 Text(event.title ?? NSLocalizedString("No title", comment: ""))
-                    .font(.system(size: 16))
-                    .foregroundColor(.onSurface)
+                    .apply(style: TextStyles.onSurfaceTitleSemibold)
             })
             DetailsBuilder(title: NSLocalizedString("Type", comment: ""), image: "info.circle", content: {
                 Text(event.type?.trimmingCharacters(in: .newlines) ?? NSLocalizedString("No type", comment: ""))
-                    .font(.system(size: 16))
-                    .foregroundColor(.onSurface)
+                    .apply(style: TextStyles.onSurfaceTitleSemibold)
             })
             DetailsBuilder(title: NSLocalizedString("Date", comment: ""), image: "calendar.badge.clock", content: {
                 let date = event.eventStart.toDate() ?? NSLocalizedString("No date", comment: "")
                 let start = event.eventStart.convertToHoursAndMinutes() ?? NSLocalizedString("(no time)", comment: "")
                 let end = event.eventEnd.convertToHoursAndMinutes() ?? NSLocalizedString("(no time)", comment: "")
                 Text(String(format: NSLocalizedString("%@, from %@ to %@", comment: ""), date, start, end))
-                    .font(.system(size: 16))
-                    .foregroundColor(.onSurface)
+                    .apply(style: TextStyles.onSurfaceTitleSemibold)
 
             })
             DetailsBuilder(title: NSLocalizedString("Available until", comment: ""), image: "signature", content: {
                 Text(event.lastSignupDate.toDate() ?? NSLocalizedString("(no date set)", comment: ""))
-                    .font(.system(size: 16))
-                    .foregroundColor(.onSurface)
+                    .apply(style: TextStyles.onSurfaceTitleSemibold)
             })
             Spacer()
             
@@ -50,8 +46,7 @@ struct ExamDetailsSheet: View {
                 }, label: {
                     HStack {
                         Text(NSLocalizedString("Unregister event", comment: ""))
-                            .font(.system(size: 18, weight: .semibold))
-                            .foregroundColor(.onPrimary)
+                            .apply(style: TextStyles.onPrimaryTitleSemibold)
                     }
                 })
                 .buttonStyle(WideAnimatedButtonStyle(color: .red))
@@ -82,7 +77,7 @@ struct ExamDetailsSheet: View {
         )
         .overlay(
             Text(NSLocalizedString("Event details", comment: ""))
-                .sheetTitle()
+                .apply(style: TextStyles.sheetTitle)
             ,alignment: .top
         )
     }

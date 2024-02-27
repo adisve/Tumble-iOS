@@ -15,8 +15,7 @@ struct UpcomingEventCardButton: View {
             VStack(alignment: .leading, spacing: 10) {
                 HStack {
                     Text(event.title)
-                        .font(.system(size: 17, weight: .medium))
-                        .foregroundColor(.onSurface)
+                        .apply(style: TextStyles.onSurfaceTitleSemibold)
                         .lineLimit(1)
                         .truncationMode(.tail)
                 }
@@ -29,13 +28,11 @@ struct UpcomingEventCardButton: View {
                        let eventStart = event.eventStart.convertToHoursAndMinutes()
                     {
                         Text(String(format: NSLocalizedString("%@, from %@ to %@", comment: ""), eventDate, eventStart, eventEnd))
-                            .font(.system(size: 15))
-                            .foregroundColor(.onSurface.opacity(0.7))
+                            .apply(style: TextStyles.onSurfaceBodyOpaque)
                         
                     } else {
                         Text(NSLocalizedString("No date at this time", comment: ""))
-                            .font(.system(size: 15))
-                            .foregroundColor(.onSurface.opacity(0.7))
+                            .apply(style: TextStyles.onSurfaceBodyOpaque)
                     }
                 }
                 HStack {
@@ -43,8 +40,7 @@ struct UpcomingEventCardButton: View {
                         .font(.system(size: 15))
                         .foregroundColor(.onSurface.opacity(0.7))
                     Text("\(NSLocalizedString("Available at:", comment: "")) \(event.firstSignupDate.toDate() ?? "(no date set)")")
-                        .font(.system(size: 15))
-                        .foregroundColor(.onSurface.opacity(0.7))
+                        .apply(style: TextStyles.onSurfaceBodyOpaque)
                 }
             }
             Spacer()

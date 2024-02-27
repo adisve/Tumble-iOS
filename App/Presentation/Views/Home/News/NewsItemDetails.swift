@@ -14,12 +14,10 @@ struct NewsItemDetails: View {
         ScrollView(showsIndicators: false) {
             VStack(alignment: .leading) {
                 Text(newsItem.title)
-                    .font(.system(size: 30, weight: .semibold))
-                    .foregroundColor(.onBackground)
+                    .apply(style: TextStyles.onBackgroundHeaderLargeSemibold)
                     .padding(.bottom, 20)
                 Text(newsItem.timestamp.formatDate() ?? "")
-                    .font(.system(size: 20, weight: .medium))
-                    .foregroundColor(.onBackground.opacity(0.8))
+                    .apply(style: TextStyles.onBackgroundHeaderSemibold)
             }
             .frame(maxWidth: .infinity, alignment: .leading)
             VStack(alignment: .leading) {
@@ -27,8 +25,7 @@ struct NewsItemDetails: View {
                     .opacity(0.8)
                     .padding(.vertical, 15)
                 Text(newsItem.body)
-                    .font(.system(size: 16, weight: .regular))
-                    .foregroundColor(.onBackground)
+                    .apply(style: TextStyles.onBackgroundBody)
             }
             .padding(.trailing, 10)
             Spacer()

@@ -15,17 +15,14 @@ struct NewsItemCard: View {
             VStack(alignment: .leading, spacing: 0) {
                 HStack {
                     Text(newsItem.title)
-                        .font(.system(size: 16, weight: .semibold))
-                        .foregroundColor(.onSurface)
+                        .apply(style: TextStyles.onSurfaceTitleSemibold)
                     Spacer()
                     Text(newsItem.timestamp.formatDate() ?? "")
-                        .font(.system(size: 14, weight: .medium))
-                        .foregroundColor(.onSurface.opacity(0.8))
+                        .apply(style: TextStyles.onSurfaceBodyOpaque)
                 }
                 .padding(.bottom, 7.5)
                 Text(newsItem.body)
-                    .font(.system(size: 14, weight: .medium))
-                    .foregroundColor(.onSurface)
+                    .apply(style: TextStyles.onSurfaceBodyMedium)
                     .multilineTextAlignment(.leading)
             }
             .padding(10)

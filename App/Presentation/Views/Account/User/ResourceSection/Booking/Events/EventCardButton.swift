@@ -23,8 +23,7 @@ struct EventCardButton: View {
                 VStack(alignment: .leading, spacing: 10) {
                     HStack {
                         Text(event.title ?? NSLocalizedString("No title", comment: ""))
-                            .font(.system(size: 17, weight: .medium))
-                            .foregroundColor(.onSurface)
+                            .apply(style: TextStyles.onSurfaceTitleMedium)
                             .lineLimit(1)
                             .truncationMode(.tail)
                     }
@@ -37,12 +36,10 @@ struct EventCardButton: View {
                            let eventStart = event.eventStart.convertToHoursAndMinutes()
                         {
                             Text(String(format: NSLocalizedString("%@, from %@ to %@", comment: ""), eventDate, eventStart, eventEnd))
-                                .font(.system(size: 15))
-                                .foregroundColor(.onSurface.opacity(0.7))
+                                .apply(style: TextStyles.onSurfaceBodyOpaque)
                         } else {
                             Text(NSLocalizedString("No date at this time", comment: ""))
-                                .font(.system(size: 15))
-                                .foregroundColor(.onSurface.opacity(0.7))
+                                .apply(style: TextStyles.onSurfaceBodyOpaque)
                         }
                     }
                     HStack {
@@ -51,13 +48,11 @@ struct EventCardButton: View {
                             .foregroundColor(.onSurface.opacity(0.7))
                         if event.lastSignupDate.isValidRegistrationDate() {
                             Text("\(NSLocalizedString("Available until", comment: "")) \(event.lastSignupDate.toDate() ?? NSLocalizedString("(no date set)", comment: ""))")
-                                .font(.system(size: 15))
-                                .foregroundColor(.onSurface.opacity(0.7))
+                                .apply(style: TextStyles.onSurfaceBodyOpaque)
 
                         } else {
                             Text(NSLocalizedString("Signup has passed", comment: ""))
-                                .font(.system(size: 15))
-                                .foregroundColor(.onSurface.opacity(0.7))
+                                .apply(style: TextStyles.onSurfaceBodyOpaque)
                         }
                     }
                 }
@@ -67,6 +62,7 @@ struct EventCardButton: View {
             .frame(minWidth: 0, maxWidth: .infinity, minHeight: 100, maxHeight: 100, alignment: .center)
             .background(Color.surface)
             .cornerRadius(15)
+            
             if event.lastSignupDate.isValidRegistrationDate() {
                 HStack {
                     Spacer()
@@ -80,8 +76,7 @@ struct EventCardButton: View {
                                 .font(.system(size: 16))
                                 .foregroundColor(.onPrimary)
                             Text(eventType == .unregister ? NSLocalizedString("Unregister", comment: "") : NSLocalizedString("Register", comment: ""))
-                                .font(.system(size: 16, weight: .semibold))
-                                .foregroundColor(.onPrimary)
+                                .apply(style: TextStyles.onPrimaryTitleSemibold)
                         }
                         .padding(10)
                         .background(Color.primary)

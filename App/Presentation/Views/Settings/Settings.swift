@@ -99,9 +99,7 @@ struct Settings: View {
                 
                 if let appVersion = appVersion {
                     Text("Tumble, iOS v.\(appVersion)")
-                        .font(.system(size: 12, weight: .regular))
-                        .foregroundColor(.onBackground.opacity(0.7))
-                        .padding(35)
+                        .apply(style: TextStyles.captionDimmed)
                 }
             }
             .padding(.top, 20)

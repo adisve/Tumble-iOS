@@ -14,8 +14,7 @@ struct TodaysEvents: View {
     var body: some View {
         VStack(alignment: .leading) {
             Text(NSLocalizedString("Today's events", comment: ""))
-                .font(.system(size: 18, weight: .semibold))
-                .foregroundColor(.onBackground)
+                .apply(style: TextStyles.onBackgroundTitleSemibold)
             VStack {
                 if !eventsForToday.isEmpty {
                     TodaysEventsCarousel(
@@ -24,8 +23,7 @@ struct TodaysEvents: View {
                     )
                 } else {
                     Text(NSLocalizedString("No events for today", comment: ""))
-                        .font(.system(size: 18))
-                        .foregroundColor(.onBackground)
+                        .apply(style: TextStyles.onBackgroundTitleSemibold)
                 }
             }
             .frame(minHeight: 100, alignment: .top)

@@ -15,8 +15,7 @@ struct TimeslotCard: View {
     var body: some View {
         HStack {
             Text(locationId)
-                .font(.system(size: 18, weight: .semibold))
-                .foregroundColor(.onSurface)
+                .apply(style: TextStyles.onSurfaceTitleSemibold)
             Spacer()
             Button(action: {
                 if bookingButtonState != .booked {
@@ -29,13 +28,11 @@ struct TimeslotCard: View {
                         .padding()
                 case .booked:
                     Text(NSLocalizedString("Booked", comment: ""))
-                        .font(.system(size: 18, weight: .semibold))
-                        .foregroundColor(.onPrimary)
+                        .apply(style: TextStyles.onPrimaryTitleSemibold)
                         .padding(7.5)
                 case .available:
                     Text(NSLocalizedString("Book", comment: ""))
-                        .font(.system(size: 18, weight: .semibold))
-                        .foregroundColor(.onPrimary)
+                        .apply(style: TextStyles.onPrimaryTitleSemibold)
                         .padding(7.5)
                 }
             })

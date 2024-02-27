@@ -14,8 +14,7 @@ struct AllNews: View {
         VStack(alignment: .leading) {
             HStack {
                 Text(NSLocalizedString("Other news", comment: ""))
-                    .font(.system(size: 16, weight: .semibold))
-                    .foregroundColor(.onBackground)
+                    .apply(style: TextStyles.onBackgroundTitleSemibold)
                 Spacer()
             }
             if let news = news {
@@ -23,8 +22,7 @@ struct AllNews: View {
                     if news.count >= 4 {
                         if news[4...].isEmpty {
                             Text(NSLocalizedString("No other news", comment: ""))
-                                .font(.system(size: 16))
-                                .foregroundColor(.onBackground)
+                                .apply(style: TextStyles.onBackgroundTitle)
                                 .padding(.top, 7.5)
                         } else {
                             ForEach(news[4...], id: \.self) { newsItem in
@@ -33,8 +31,7 @@ struct AllNews: View {
                         }
                     } else {
                         Text(NSLocalizedString("No other news", comment: ""))
-                            .font(.system(size: 16))
-                            .foregroundColor(.onBackground)
+                            .apply(style: TextStyles.onBackgroundTitle)
                             .padding(.top, 7.5)
                     }
                 }

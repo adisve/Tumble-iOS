@@ -26,10 +26,9 @@ struct UserOverview: View {
                             .font(.system(size: collapsedHeader ? 20 : 22, weight: .semibold))
                         if !collapsedHeader {
                             Text(username)
-                                .font(.system(size: 16, weight: .regular))
+                                .apply(style: TextStyles.username)
                             Text(viewModel.schoolName)
-                                .font(.system(size: 14, weight: .semibold))
-                                .padding(.top, 10)
+                                .apply(style: TextStyles.schoolName)
                         }
                     }
                     .padding(10)

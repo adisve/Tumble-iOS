@@ -19,8 +19,7 @@ struct TimeslotDropdown: View {
         VStack {
             HStack {
                 Text(selectionTitle)
-                    .font(.system(size: 18, weight: .semibold))
-                    .foregroundColor(.onSurface)
+                    .apply(style: TextStyles.onSurfaceTitleSemibold)
                 Spacer()
                 Image(systemName: "chevron.down")
                     .font(.system(size: 18, weight: .semibold))
@@ -98,8 +97,7 @@ private struct DropdownMenuItemView: View {
         }) {
             HStack {
                 Text(item.title)
-                    .font(.system(size: 18, weight: .semibold))
-                    .foregroundColor(.onSurface)
+                    .apply(style: TextStyles.onSurfaceTitleSemibold)
                 Spacer()
                 if selectedIndex == item.id {
                     Image(systemName: "checkmark.circle")

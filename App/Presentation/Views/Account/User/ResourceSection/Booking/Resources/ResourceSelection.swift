@@ -22,8 +22,7 @@ struct ResourceSelection: View {
         if let timeslots = resource.timeSlots {
             VStack(alignment: .leading) {
                 Text(selectedPickerDate.formatDate())
-                    .font(.system(size: 22, weight: .semibold))
-                    .foregroundColor(.onBackground)
+                    .apply(style: TextStyles.onBackgroundHeaderSemibold)
                     .padding(.horizontal, 15)
                     .padding(.vertical, 20)
                 TimeslotDropdown(

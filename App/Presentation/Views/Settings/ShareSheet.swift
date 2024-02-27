@@ -29,9 +29,7 @@ struct ShareSheet: View {
                 copyButton
                 VStack (alignment: .center) {
                     Text(NSLocalizedString("Scan QR Code", comment: ""))
-                        .font(.system(size: 16, weight: .semibold))
-                        .foregroundColor(.onSurface)
-                        .padding(.bottom, 7)
+                        .apply(style: TextStyles.shareSheetTitle)
                     if let qrCodeImage = qrCodeImage {
                         Image(uiImage: qrCodeImage)
                             .interpolation(.none)
@@ -71,12 +69,9 @@ struct ShareSheet: View {
             HStack {
                 VStack (alignment: .leading, spacing: 0) {
                     Text(NSLocalizedString("Copy link", comment: ""))
-                        .font(.system(size: 16, weight: .semibold))
-                        .foregroundColor(.onSurface)
-                        .padding(.bottom, 7)
+                        .apply(style: TextStyles.shareSheetTitle)
                     Text(websiteLink)
-                        .font(.system(size: 12))
-                        .foregroundColor(.onSurface.opacity(0.7))
+                        .apply(style: TextStyles.linkDimmed)
                 }
                 Spacer()
                 Image(systemName: "doc.on.doc")

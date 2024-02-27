@@ -18,8 +18,7 @@ struct SettingsRadioButton: View {
         }) {
             HStack {
                 Text(title)
-                    .font(.system(size: 18, weight: .regular))
-                    .foregroundColor(.onSurface)
+                    .apply(style: TextStyles.onSurfaceTitleSemibold)
                 Spacer()
                 if isSelected {
                     Image(systemName: "checkmark")

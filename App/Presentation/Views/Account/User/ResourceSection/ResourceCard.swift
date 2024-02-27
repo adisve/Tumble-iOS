@@ -66,8 +66,7 @@ struct TitleView: View {
     
     var body: some View {
         Text(title ?? NSLocalizedString("No title", comment: ""))
-            .font(.system(size: 17, weight: .medium))
-            .foregroundColor(.onSurface)
+            .apply(style: TextStyles.onSurfaceTitleMedium)
             .lineLimit(1)
             .truncationMode(.tail)
     }
@@ -85,8 +84,7 @@ struct InformationView: View {
                     .font(.system(size: 15))
                     .foregroundColor(.onSurface.opacity(0.7))
                 Text(text)
-                    .font(.system(size: 15))
-                    .foregroundColor(.onSurface.opacity(0.7))
+                    .apply(style: TextStyles.onSurfaceBodyOpaque)
             }
         }
     }
@@ -105,8 +103,7 @@ struct DateView: View {
                     .font(.system(size: 15))
                     .foregroundColor(.onSurface.opacity(0.7))
                 Text(String(format: NSLocalizedString("%@, from %@ to %@", comment: ""), date, start, end))
-                    .font(.system(size: 15))
-                    .foregroundColor(.onSurface.opacity(0.7))
+                    .apply(style: TextStyles.onSurfaceBodyOpaque)
             }
         }
     }

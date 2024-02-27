@@ -19,16 +19,15 @@ struct ResourceDetailSheet: View {
         VStack {
             DetailsBuilder(title: NSLocalizedString("Location", comment: ""), image: "mappin.and.ellipse", content: {
                 Text(resource.locationID)
-                    .font(.system(size: 16))
-                    .foregroundColor(.onSurface)
+                    .apply(style: TextStyles.onSurfaceTitleSemibold)
             })
             DetailsBuilder(title: NSLocalizedString("Timeslot", comment: ""), image: "clock.arrow.circlepath", content: {
                 Text("\(resource.timeSlot.from?.convertToHoursAndMinutes() ?? "(no time)") - \(resource.timeSlot.to?.convertToHoursAndMinutes() ?? "(no time")")
+                    .apply(style: TextStyles.onSurfaceTitleSemibold)
             })
             DetailsBuilder(title: NSLocalizedString("Date", comment: ""), image: "calendar.badge.clock", content: {
                 Text(resource.timeSlot.from?.toDate() ?? NSLocalizedString("(no date)", comment: ""))
-                    .font(.system(size: 16))
-                    .foregroundColor(.onSurface)
+                    .apply(style: TextStyles.onSurfaceTitleSemibold)
             })
             if let confirmationOpen = resource.confirmationOpen, let confirmationClosed = resource.confirmationClosed {
                 DetailsBuilder(title: NSLocalizedString("Confirmation", comment: ""), image: "checkmark.seal", content: {
@@ -36,8 +35,7 @@ struct ResourceDetailSheet: View {
                     let from = confirmationOpen.convertToHoursAndMinutes() ?? NSLocalizedString("(missing)", comment: "")
                     let to = confirmationClosed.convertToHoursAndMinutes() ?? NSLocalizedString("(missing)", comment: "")
                     Text(String(format: NSLocalizedString("%@, from %@ to %@", comment: ""), date, from, to))
-                        .font(.system(size: 16))
-                        .foregroundColor(.onSurface)
+                        .apply(style: TextStyles.onSurfaceTitleSemibold)
                 })
             }
             Spacer()
@@ -49,8 +47,7 @@ struct ResourceDetailSheet: View {
                 }, label: {
                     HStack {
                         Text(NSLocalizedString("Confirm booking", comment: ""))
-                            .font(.system(size: 18, weight: .semibold))
-                            .foregroundColor(.onPrimary)
+                            .apply(style: TextStyles.onPrimaryTitleSemibold)
                     }
                 })
                 .buttonStyle(WideAnimatedButtonStyle())
@@ -65,8 +62,7 @@ struct ResourceDetailSheet: View {
                 }, label: {
                     HStack {
                         Text(NSLocalizedString("Remove booking", comment: ""))
-                            .font(.system(size: 18, weight: .semibold))
-                            .foregroundColor(.onPrimary)
+                            .apply(style: TextStyles.onPrimaryTitleSemibold)
                     }
                 })
                 .buttonStyle(WideAnimatedButtonStyle(color: .red))
@@ -84,7 +80,7 @@ struct ResourceDetailSheet: View {
         )
         .overlay(
             Text(NSLocalizedString("Resource details", comment: ""))
-                .sheetTitle()
+                .apply(style: TextStyles.sheetTitle)
             ,alignment: .top
         )
     }

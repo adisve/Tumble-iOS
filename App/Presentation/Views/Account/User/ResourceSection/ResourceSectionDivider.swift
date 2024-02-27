@@ -37,8 +37,7 @@ struct ResourceSectionDivider<Content: View>: View {
         VStack(alignment: .leading, spacing: 0) {
             HStack {
                 Text(title)
-                    .font(.system(size: 18, weight: .semibold))
-                    .foregroundColor(.onBackground)
+                    .apply(style: TextStyles.onBackgroundTitleSemibold)
                 Spacer()
                 if let destination = destination {
                     NavigationLink(destination: destination, label: {
@@ -69,8 +68,7 @@ private struct ResourceNavigationItem: View {
     var body: some View {
         HStack {
             Text(LocalizedStringKey(title))
-                .font(.system(size: 16, weight: .semibold))
-                .foregroundColor(.onPrimary)
+                .apply(style: TextStyles.onPrimaryTitleSemibold)
             Image(systemName: "chevron.right")
                 .font(.system(size: 14, weight: .semibold))
                 .foregroundColor(.onPrimary)

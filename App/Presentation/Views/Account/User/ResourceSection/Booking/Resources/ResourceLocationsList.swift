@@ -33,8 +33,7 @@ struct ResourceLocationsList: View {
                         VStack(alignment: .leading, spacing: 10) {
                             HStack {
                                 Text(resource.name ?? NSLocalizedString("No name", comment: ""))
-                                    .font(.system(size: 18, weight: .medium))
-                                    .foregroundColor(.onSurface)
+                                    .apply(style: TextStyles.onSurfaceTitleMedium)
                                     .lineLimit(1)
                                     .truncationMode(.tail)
                                 Spacer()
@@ -44,16 +43,14 @@ struct ResourceLocationsList: View {
                                     .font(.system(size: 15))
                                     .foregroundColor(.onSurface.opacity(0.7))
                                 Text("\(selectedPickerDate.formatDate())")
-                                    .font(.system(size: 15))
-                                    .foregroundColor(.onSurface.opacity(0.7))
+                                    .apply(style: TextStyles.onSurfaceBodyOpaque)
                             }
                             HStack {
                                 Image(systemName: "clock.arrow.circlepath")
                                     .font(.system(size: 15))
                                     .foregroundColor(.onSurface.opacity(0.7))
                                 Text(String(format: NSLocalizedString("Available timeslots: %d", comment: ""), availableCounts))
-                                    .font(.system(size: 15))
-                                    .foregroundColor(.onSurface.opacity(0.7))
+                                    .apply(style: TextStyles.onSurfaceBodyOpaque)
                             }
                         }
                         .padding()

@@ -14,9 +14,7 @@ struct ColorfulIconLabelStyle: LabelStyle {
     func makeBody(configuration: Configuration) -> some View {
         Label {
             configuration.title
-                .font(.system(size: 18, weight: .regular))
-                .foregroundColor(.onSurface)
-                .padding(.leading, 20)
+                .apply(style: TextStyles.labelBody)
         } icon: {
             configuration.icon
                 .font(.system(size: 16, weight: .semibold))

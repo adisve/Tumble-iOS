@@ -16,13 +16,10 @@ struct PopupToast: BottomPopup {
         HStack {
             VStack (alignment: .leading, spacing: 0) {
                 Text(popup.title)
-                    .foregroundColor(.onPrimary)
-                    .font(.system(size: 14, weight: .semibold))
-                    .padding(.bottom, 5)
+                    .apply(style: TextStyles.toastBody)
                 if let message = popup.message {
                     Text(message)
-                        .foregroundColor(.onPrimary)
-                        .font(.system(size: 13, weight: .regular))
+                        .apply(style: TextStyles.toastCaption)
                 }
             }
             Spacer()

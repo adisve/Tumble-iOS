@@ -14,16 +14,14 @@ struct RecentNews: View {
         VStack(alignment: .leading) {
             HStack {
                 Text(NSLocalizedString("Recent news", comment: ""))
-                    .font(.system(size: 16, weight: .semibold))
-                    .foregroundColor(.onBackground)
+                    .apply(style: TextStyles.onBackgroundTitleSemibold)
                 Spacer()
             }
             if let news = news {
                 VStack(alignment: .leading) {
                     if news.isEmpty {
                         Text(NSLocalizedString("No recent news", comment: ""))
-                            .font(.system(size: 16))
-                            .foregroundColor(.onBackground)
+                            .apply(style: TextStyles.onBackgroundTitle)
                             .padding(.top, 7.5)
                     } else {
                         ForEach(news.pick(length: 4), id: \.self) { newsItem in
