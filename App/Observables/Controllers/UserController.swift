@@ -7,6 +7,7 @@
 
 import Foundation
 import SwiftUI
+import Combine
 
 /// Controller handling any changes to the specific user
 /// currently authorized in the application. Also attempts
@@ -21,18 +22,52 @@ final class UserController: ObservableObject {
     @Published var refreshToken: Token? = nil
     @Published var sessionDetails: Token? = nil
     
+    @Published var mostRecentUser: String? = nil
+    @Published var authSchoolId: Int? = nil
+    
+    private var cancellables = Set<AnyCancellable>()
+    
     init() {
-        Task.detached(priority: .userInitiated) { [weak self] in
-            guard let self else { return }
-            let authSchoolId = self.preferenceService.authSchoolId
-            await self.autoLogin(authSchoolId: authSchoolId)
-        }
+        initObservers()
+    }
+    
+    private func initObservers() {
+        let mostRecentUsername = preferenceService.$mostRecentUser.receive(on: RunLoop.main)
+        let authSchoolId = preferenceService.$authSchoolId.receive(on: RunLoop.main)
+        
+        let combinedPublisher = Publishers.CombineLatest(mostRecentUsername, authSchoolId)
+            .removeDuplicates { (prev, current) in
+                return prev.0 == current.0 && prev.1 == current.1
+            }
+        
+        combinedPublisher
+            .sink { [weak self] (username, id) in
+                guard let self = self else { return }
+                
+                self.authSchoolId = id
+                if let username = username {
+                    self.mostRecentUser = username
+                    
+                    DispatchQueue.main.async {
+                        Task {
+                            try await self.changeUser(to: username)
+                        }
+                    }
+                }
+            }.store(in: &cancellables)
+    }
+
+    
+    func changeUser(to username: String) async throws {
+        preferenceService.updateMostRecentUser(to: username)
+        await autoLogin()
     }
     
     /// Attempts to log out user, and also remove any keychain items
     /// saved that are related to authorization - tokens, passwords, etc.
     func logOut() async throws {
-        try await authManager.logOutUser()
+        guard let user = mostRecentUser else { return }
+        try await authManager.logOutUser(username: user)
         AppLogger.shared.debug("Successfully deleted items from KeyChain")
         DispatchQueue.main.async { [weak self] in
             self?.authStatus = .unAuthorized
@@ -51,8 +86,13 @@ final class UserController: ObservableObject {
             let userRequest = NetworkRequest.KronoxUserLogin(username: username, password: password)
             let user: TumbleUser = try await authManager.loginUser(authSchoolId: authSchoolId, user: userRequest)
             try await self.authManager.setUser(user)
-            let refreshToken: Token? = await authManager.getToken(.refreshToken)
-            let sessionDetails: Token? = await authManager.getToken(.sessionDetails)
+            
+            /// Set this logged in user as the most recently logged in user
+            preferenceService.updateMostRecentUser(to: username)
+            
+            let refreshToken: Token? = await authManager.getToken(.refreshToken, username: username)
+            let sessionDetails: Token? = await authManager.getToken(.sessionDetails, username: username)
+            
             DispatchQueue.main.async {
                 AppLogger.shared.debug("Successfully logged in user \(user.username)")
                 self.user = user
@@ -71,12 +111,17 @@ final class UserController: ObservableObject {
     
     /// Attempts to automatically log in the user by finding any available
     /// information in the keychain storage of the phone.
-    func autoLogin(authSchoolId: Int) async {
+    func autoLogin() async {
+        /// Get most recent user by name and auth school id.
+        /// If these do not exist we don't even attempt to sign in
+        guard let username = mostRecentUser, let authSchoolId = authSchoolId else { return }
+        
         AppLogger.shared.debug("Attempting auto login for user", source: "UserController")
-        let refreshToken: Token? = await authManager.getToken(.refreshToken)
-        let sessionDetails: Token? = await authManager.getToken(.sessionDetails)
+        let refreshToken: Token? = await authManager.getToken(.refreshToken, username: username)
+        let sessionDetails: Token? = await authManager.getToken(.sessionDetails, username: username)
+        
         do {
-            let user: TumbleUser = try await authManager.autoLoginUser(authSchoolId: authSchoolId)
+            let user: TumbleUser = try await authManager.autoLoginUser(authSchoolId: authSchoolId, username: username)
             try await self.authManager.setUser(user)
             
             DispatchQueue.main.async {
@@ -98,4 +143,7 @@ final class UserController: ObservableObject {
         }
     }
     
+    deinit {
+        cancellables.forEach { $0.cancel() }
+    }
 }

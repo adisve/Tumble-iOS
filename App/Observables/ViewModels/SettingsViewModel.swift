@@ -19,26 +19,55 @@ final class SettingsViewModel: ObservableObject {
     @Published var bookmarks: [Bookmark]?
     @Published var presentSidebarSheet: Bool = false
     @Published var authStatus: AuthStatus = .unAuthorized
+    
+    @Published var currentUser: String? = nil
+    @Published var allUserAccounts: [String] = []
     @Published var authSchoolId: Int = -1
     @Published var schoolName: String = ""
     
     let popupFactory: PopupFactory = PopupFactory.shared
     private lazy var schools: [School] = schoolManager.getSchools()
-    private var cancellable: AnyCancellable? = nil
+    private var cancellables = Set<AnyCancellable>()
     
-    init() { setUpDataPublishers() }
+    init() {
+        setUpDataPublishers()
+    }
     
     private func setUpDataPublishers() {
         DispatchQueue.global(qos: .userInitiated).async { [weak self] in
             guard let self else { return }
             let schoolIdPublisher = self.preferenceService.$authSchoolId.receive(on: RunLoop.main)
+            let currentUserPublisher = self.preferenceService.$mostRecentUser.receive(on: RunLoop.main)
+            let allUserAccountsPublisher = preferenceService.$allUserAccounts.receive(on: RunLoop.main)
+
+            currentUserPublisher
+                .removeDuplicates()
+                .sink { user in
+                    if let user = user {
+                        self.currentUser = user
+                    }
+                }
+                .store(in: &cancellables)
             
-            self.cancellable = schoolIdPublisher.sink { schoolId in
-                self.authSchoolId = schoolId
-                self.schoolName = self.schools.first(where: { $0.id == schoolId })?.name ?? ""
-            }
+            schoolIdPublisher
+                .removeDuplicates()
+                .sink { schoolId in
+                    self.authSchoolId = schoolId
+                    self.schoolName = self.schools.first(where: { $0.id == schoolId })?.name ?? ""
+                }
+                .store(in: &cancellables)
             
+            allUserAccountsPublisher
+                .removeDuplicates()
+                .sink { allUserAccounts in
+                    self.allUserAccounts = allUserAccounts
+                }
+                .store(in: &cancellables)
         }
+    }
+    
+    func changeUser(newUser: String) {
+        preferenceService.updateMostRecentUser(to: newUser)
     }
     
     func removeNotifications(for id: String, referencing events: [Event]) {
@@ -117,7 +146,7 @@ final class SettingsViewModel: ObservableObject {
     }
     
     deinit {
-        cancellable?.cancel()
+        cancellables.forEach { $0.cancel() }
     }
 
 }

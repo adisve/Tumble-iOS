@@ -145,6 +145,7 @@ final class AccountViewModel: ObservableObject {
     func logOut() async {
         do {
             try await userController.logOut()
+            preferenceService.removeMostRecentUser()
             await notificationManager.cancelNotifications(with: "Booking")
         } catch {
             AppLogger.shared.error("Failed to log out user: \(error)")

@@ -18,4 +18,6 @@ enum StoreKey: String {
     case networkSettings = "network_settings"
     case lastUpdated = "last_updated"
     case showOneTimePopup = "show_one_time_popup"
+    case lastUser = "last_user"
+    case allUserAccounts = "all_user_accounts"
 }

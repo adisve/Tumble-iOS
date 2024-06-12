@@ -12,11 +12,15 @@ class PreferenceService {
     @Published var userOnBoarded: Bool = false
     @Published var authSchoolId: Int = -1
     @Published var autoSignupEnabled: Bool = false
+    @Published var mostRecentUser: String? = nil
+    @Published var allUserAccounts: [String] = []
     
     init() {
         authSchoolId = getDefaultAuthSchool() ?? -1
         userOnBoarded = isKeyPresentInUserDefaults(key: StoreKey.userOnboarded.rawValue)
         autoSignupEnabled = getAutoSignup()
+        mostRecentUser = getLastUser()
+        allUserAccounts = getAllUserAccounts()
     }
     
     // ----------- SET -----------
@@ -25,6 +29,64 @@ class PreferenceService {
         UserDefaults.standard.set(id, forKey: StoreKey.authSchool.rawValue)
         UserDefaults.standard.synchronize()
     }
+    
+    func setUserAccount(username: String) {
+        var allUserAccounts = UserDefaults.standard.array(forKey: StoreKey.allUserAccounts.rawValue) as? [String] ?? []
+        
+        allUserAccounts.append(username)
+        UserDefaults.standard.set(allUserAccounts, forKey: StoreKey.allUserAccounts.rawValue)
+        UserDefaults.standard.synchronize()
+    }
+    
+    func updateMostRecentUser(to username: String) {
+        defer {
+            UserDefaults.standard.synchronize()
+            mostRecentUser = username
+        }
+        
+        if var allUserAccounts = UserDefaults.standard.array(forKey: StoreKey.allUserAccounts.rawValue) as? [String] {
+            if let index = allUserAccounts.firstIndex(of: username) {
+                allUserAccounts.remove(at: index)
+                allUserAccounts.append(username)
+                UserDefaults.standard.set(allUserAccounts, forKey: StoreKey.allUserAccounts.rawValue)
+                
+                self.allUserAccounts = allUserAccounts
+            } else {
+                allUserAccounts.append(username)
+                UserDefaults.standard.set(allUserAccounts, forKey: StoreKey.allUserAccounts.rawValue)
+                
+                self.allUserAccounts = allUserAccounts
+            }
+        } else {
+            let newAllUserAccounts = [username]
+            UserDefaults.standard.set(newAllUserAccounts, forKey: StoreKey.allUserAccounts.rawValue)
+            
+            self.allUserAccounts = newAllUserAccounts
+        }
+    }
+
+    func removeMostRecentUser() {
+        let userDefaults = UserDefaults.standard
+        let allUserAccountsKey = StoreKey.allUserAccounts.rawValue
+
+        if var allUserAccounts = userDefaults.array(forKey: allUserAccountsKey) as? [String] {
+            if !allUserAccounts.isEmpty {
+                allUserAccounts.removeLast()
+
+                userDefaults.set(allUserAccounts, forKey: allUserAccountsKey)
+
+                if let newMostRecentUser = allUserAccounts.last {
+                    userDefaults.set(newMostRecentUser, forKey: StoreKey.lastUser.rawValue)
+                } else {
+                    userDefaults.removeObject(forKey: StoreKey.lastUser.rawValue)
+                }
+
+                userDefaults.synchronize()
+                self.allUserAccounts = allUserAccounts
+            }
+        }
+    }
+
     
     func setUserOnboarded() {
         UserDefaults.standard.set(true, forKey: StoreKey.userOnboarded.rawValue)
@@ -71,6 +133,15 @@ class PreferenceService {
     // ----------- GET -----------
     func getDefault(key: String) -> Any? {
         return UserDefaults.standard.object(forKey: key)
+    }
+    
+    func getLastUser() -> String? {
+        let allUserAccounts = UserDefaults.standard.array(forKey: StoreKey.allUserAccounts.rawValue) as? [String] ?? []
+        return allUserAccounts.last
+    }
+    
+    func getAllUserAccounts() -> [String] {
+        return UserDefaults.standard.array(forKey: StoreKey.allUserAccounts.rawValue) as? [String] ?? []
     }
     
     func getLastUpdated() -> Date? {

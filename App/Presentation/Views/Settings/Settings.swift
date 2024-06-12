@@ -48,7 +48,18 @@ struct Settings: View {
                 }
                 SettingsListGroup {
                     SettingsNavigationButton(
+                        title: NSLocalizedString("Accounts", comment: ""),
+                        leadingIcon: "person",
+                        leadingIconBackgroundColor: .yellow,
+                        destination: AnyView(AccountsSettings(
+                            currentUser: $viewModel.currentUser,
+                            accountList: $viewModel.allUserAccounts,
+                            changeUser: viewModel.changeUser))
+                    )
+                    Divider()
+                    SettingsNavigationButton(
                         title: NSLocalizedString("Notification offset", comment: ""),
+                        current: "\(getOffsetDisplayName(offset: offset))",
                         leadingIcon: "clock",
                         leadingIconBackgroundColor: .red,
                         destination: AnyView(NotificationOffsetSettings(
@@ -140,6 +151,19 @@ struct Settings: View {
             }
         } else {
             PopupToast(popup: PopupFactory.shared.noAvailableBookmarks()).showAndStack()
+        }
+    }
+    
+    func getOffsetDisplayName(offset: Int) -> String {
+        if offset < 60 {
+            return "\(offset) \(NSLocalizedString("minutes", comment: ""))"
+        } else {
+            let hours = offset / 60
+            if hours == 1 {
+                return "\(hours) \(NSLocalizedString("hour", comment: ""))"
+            } else {
+                return "\(hours) \(NSLocalizedString("hours", comment: ""))"
+            }
         }
     }
     

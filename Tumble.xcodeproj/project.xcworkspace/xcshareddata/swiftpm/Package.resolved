@@ -1,5 +1,4 @@
 {
-  "originHash" : "89d000a5db4b6c366c1e0bf197ffe2367c05d824a3b49c29a21fd9350e6bbff8",
   "pins" : [
     {
       "identity" : "abseil-cpp-swiftpm",
@@ -60,8 +59,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/google/GoogleUtilities.git",
       "state" : {
-        "revision" : "26c898aed8bed13b8a63057ee26500abbbcb8d55",
-        "version" : "7.13.1"
+        "revision" : "57a1d307f42df690fdef2637f3e5b776da02aad6",
+        "version" : "7.13.3"
       }
     },
     {
@@ -105,8 +104,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/Mijick/PopupView.git",
       "state" : {
-        "revision" : "828066a10960dabdf592d84f4071564650a27a75",
-        "version" : "2.3.1"
+        "revision" : "2465a5aef481f3b0bbf2a26dc0aca692c7dc6f5b",
+        "version" : "2.4.2"
       }
     },
     {
@@ -123,8 +122,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/realm/realm-core.git",
       "state" : {
-        "revision" : "4d815c6e6883bfdcb67cf755d0f0f29a4b399ea7",
-        "version" : "14.5.2"
+        "revision" : "f3d7ae5f9f31d90b327a64536bb7801cc69fd85b",
+        "version" : "14.9.0"
       }
     },
     {
@@ -132,8 +131,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/realm/realm-swift.git",
       "state" : {
-        "revision" : "a4d731076e6a52f4366d844c78369ac7c9c6b1c0",
-        "version" : "10.49.2"
+        "revision" : "4c4413abd0cd2221f59318f800960fe5bddc1494",
+        "version" : "10.51.0"
       }
     },
     {
@@ -164,5 +163,5 @@
       }
     }
   ],
-  "version" : 3
+  "version" : 2
 }

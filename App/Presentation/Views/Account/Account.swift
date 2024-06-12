@@ -28,11 +28,16 @@ struct Account: View {
             .ignoresSafeArea(.keyboard)
             .navigationBarTitleDisplayMode(.inline)
             .navigationTitle(NSLocalizedString("Account", comment: ""))
-            .navigationBarItems(trailing: HStack {
+            .navigationBarItems(leading:
+                HStack {
                 if viewModel.authStatus == .authorized {
                     SignOutButton(showConfirmationDialog: {
                         isSigningOut = true
                     })
+                }
+            }, trailing: HStack {
+                if viewModel.authStatus == .authorized {
+                    AddAccountButton()
                 }
                 SettingsButton()
             })

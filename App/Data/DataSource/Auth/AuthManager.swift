@@ -25,17 +25,20 @@ class AuthManager {
         return try await performLoginRequest(urlRequest, with: user)
     }
     
-    func logOutUser() async throws {
+    func logOutUser(username: String) async throws {
         AppLogger.shared.info("Logging out user")
-        try await clearKeychainData(for: [TokenType.refreshToken.rawValue, TokenType.sessionDetails.rawValue, "tumble-user"])
+        try await clearKeychainData(for: [
+            "\(username)-\(TokenType.refreshToken.rawValue)",
+            "\(username)-\(TokenType.sessionDetails.rawValue)", "\(username)-tumble-user"]
+        )
     }
 
-    func autoLoginUser(authSchoolId: Int) async throws -> TumbleUser {
-        guard let user = await getUser() else {
+    func autoLoginUser(authSchoolId: Int, username: String) async throws -> TumbleUser {
+        guard let user = await getUser(username: username) else {
             throw AuthError.decodingError
         }
-        let refreshToken = await getToken(.refreshToken)
-        let sessionDetails = await getToken(.sessionDetails)
+        let refreshToken = await getToken(.refreshToken, username: username)
+        let sessionDetails = await getToken(.sessionDetails, username: username)
         
         let urlRequest = try createAutoLoginRequest(authSchoolId: authSchoolId, refreshToken: refreshToken, sessionDetails: sessionDetails)
         
@@ -58,7 +61,7 @@ class AuthManager {
             throw AuthError.httpResponseError
         }
         
-        try await storeUpdatedTokensIfNeeded(from: httpResponse)
+        try await storeUpdatedTokensIfNeeded(from: httpResponse, username: user.username)
         let kronoxUser = try decodeKronoxUser(from: data)
 
         return TumbleUser(username: kronoxUser.username, name: kronoxUser.name)
@@ -69,28 +72,28 @@ class AuthManager {
             let (data, response) = try await urlSession.data(for: urlRequest)
             
             if let statusCode = (response as? HTTPURLResponse)?.statusCode, statusCode > 299 {
-                try await logOutUser()
+                try await logOutUser(username: user.username)
                 throw AuthError.httpResponseError
             }
 
-            try await storeUpdatedTokensIfNeeded(from: response as? HTTPURLResponse)
+            try await storeUpdatedTokensIfNeeded(from: response as? HTTPURLResponse, username: user.username)
             let kronoxUser = try decodeKronoxUser(from: data)
 
             return TumbleUser(username: user.username, name: kronoxUser.name)
         } catch {
             if Network.shared.connected {
-                try await logOutUser()
+                try await logOutUser(username: user.username)
                 throw AuthError.requestError
             }
             throw AuthError.autoLoginError(user: user) /// Show latest stored user info
         }
     }
 
-    private func storeUpdatedTokensIfNeeded(from httpResponse: HTTPURLResponse?) async throws {
+    private func storeUpdatedTokensIfNeeded(from httpResponse: HTTPURLResponse?, username: String) async throws {
         if let refreshToken = httpResponse?.allHeaderFields["x-auth-token"] as? String,
            let sessionDetails = httpResponse?.allHeaderFields["x-session-token"] as? String {
-            try await setToken(Token(value: refreshToken, createdDate: Date.now), for: .refreshToken)
-            try await setToken(Token(value: sessionDetails, createdDate: Date.now), for: .sessionDetails)
+            try await setToken(Token(value: refreshToken, createdDate: Date.now), for: .refreshToken, username: username)
+            try await setToken(Token(value: sessionDetails, createdDate: Date.now), for: .sessionDetails, username: username)
         }
     }
 
@@ -120,32 +123,41 @@ class AuthManager {
     }
 
     // MARK: - Keychain Management
-
-    func getUser() async -> TumbleUser? {
-        guard let data = try? await keychainManager.readKeyChain(for: "tumble-user", account: "Tumble for Kronox"),
+    
+    /// Fetch most recent user object based on the username
+    /// that is passed
+    func getUser(username: String) async -> TumbleUser? {
+        guard let data = try? await keychainManager.readKeyChain(for: "\(username)-tumble-user", account: "Tumble for Kronox"),
               let user = try? JSONDecoder().decode(TumbleUser.self, from: data) else {
             AppLogger.shared.info("Could not decode Tumble user")
             return nil
         }
         return user
     }
-
-    func getToken(_ tokenType: TokenType) async -> Token? {
-        guard let data = try? await keychainManager.readKeyChain(for: tokenType.rawValue, account: "Tumble for Kronox"),
+    
+    /// Fetch most recent token based on its type and the specific username
+    /// related to that token
+    func getToken(_ tokenType: TokenType, username: String) async -> Token? {
+        guard let data = try? await keychainManager.readKeyChain(for: "\(username)-\(tokenType.rawValue)", account: "Tumble for Kronox"),
               let token = try? JSONDecoder().decode(Token.self, from: data) else {
             AppLogger.shared.info("Could not decode token")
             return nil
         }
         return token
     }
-
-    func setUser(_ newValue: TumbleUser?) async throws {
-        guard let newValue = newValue, let data = try? JSONEncoder().encode(newValue) else { return }
-        try await keychainManager.saveKeyChain(data, for: "tumble-user", account: "Tumble for Kronox")
+    
+    
+    /// Save decoded user object to keychain based on the given username to
+    /// allow for multiple user accounts to be saved on the same device
+    func setUser(_ newUser: TumbleUser?) async throws {
+        guard let newUser = newUser, let data = try? JSONEncoder().encode(newUser) else { return }
+        try await keychainManager.saveKeyChain(data, for: "\(newUser.username)-tumble-user", account: "Tumble for Kronox")
     }
 
-    func setToken(_ newValue: Token?, for tokenType: TokenType) async throws {
-        guard let newValue = newValue, let data = try? JSONEncoder().encode(newValue) else { return }
-        try await keychainManager.saveKeyChain(data, for: tokenType.rawValue, account: "Tumble for Kronox")
+    /// Save decoded user token to keychain based on the given username to
+    /// allow for multiple user account tokens to be saved on the same device
+    func setToken(_ newToken: Token?, for tokenType: TokenType, username: String) async throws {
+        guard let newToken = newToken, let data = try? JSONEncoder().encode(newToken) else { return }
+        try await keychainManager.saveKeyChain(data, for: "\(username)-\(tokenType.rawValue)", account: "Tumble for Kronox")
     }
 }
