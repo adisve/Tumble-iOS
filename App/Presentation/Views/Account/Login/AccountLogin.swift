@@ -57,7 +57,6 @@ struct AccountLogin: View {
             ForEach(viewModel.schools, id: \.self) { school in
                 Button(action: {
                     selectedSchool = school
-                    setSchoolForAuth()
                 }, label: {
                     HStack {
                         Text(school.name)
@@ -88,17 +87,12 @@ struct AccountLogin: View {
                 await viewModel.login(
                     authSchoolId: selectedSchool.id,
                     username: username,
-                    password: password
+                    password: password,
+                    school: selectedSchool
                 )
             }
         } else { /// No school selected, invalid
             PopupToast(popup: PopupFactory.shared.loginRequiresSchool()).showAndStack()
-        }
-    }
-    
-    fileprivate func setSchoolForAuth() {
-        if let selectedSchool = selectedSchool {
-            viewModel.setDefaultAuthSchool(schoolId: selectedSchool.id)
         }
     }
 }

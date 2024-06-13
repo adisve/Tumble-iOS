@@ -8,7 +8,6 @@
 import Foundation
 
 enum StoreKey: String {
-    case authSchool = "auth_school"
     case appearance = "appearance"
     case locale = "locale"
     case notificationOffset = "notification_offset"

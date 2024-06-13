@@ -18,43 +18,25 @@ final class LoginViewModel: ObservableObject {
     
     let popupFactory: PopupFactory = .shared
     lazy var schools: [School] = schoolManager.getSchools()
-    var cancellable: AnyCancellable? = nil
-    
-    init() {
-        setupDataPublishers()
-    }
-    
-    private func setupDataPublishers() {
-        let authSchoolIdPublisher = preferenceService.$authSchoolId.receive(on: RunLoop.main)
-        cancellable = authSchoolIdPublisher
-            .sink { [weak self] authSchoolId in
-                self?.authSchoolId = authSchoolId
-            }
-    }
-    
-    func setDefaultAuthSchool(schoolId: Int) {
-        preferenceService.setAuthSchool(id: schoolId)
-    }
     
     func login(
         authSchoolId: Int,
         username: String,
-        password: String
+        password: String,
+        school: School
     ) async {
         defer {
-            DispatchQueue.main.async { [weak self] in
-                withAnimation {
-                    self?.attemptingLogin = false
-                }
-            }
+            animateAuthentication(loggingIn: false)
         }
         do {
-            DispatchQueue.main.async { [weak self] in
-                withAnimation {
-                    self?.attemptingLogin = true
-                }
-            }
-            try await userController.logIn(authSchoolId: authSchoolId, username: username, password: password)
+            animateAuthentication(loggingIn: true)
+            try await userController.logIn(
+                authSchoolId: authSchoolId,
+                username: username,
+                password: password,
+                school: school
+            )
+            
             if userController.authStatus == .authorized {
                 DispatchQueue.main.async { [weak self] in
                     guard let self else { return }
@@ -70,7 +52,11 @@ final class LoginViewModel: ObservableObject {
         }
     }
     
-    deinit {
-        cancellable?.cancel()
+    func animateAuthentication(loggingIn: Bool) {
+        DispatchQueue.main.async { [weak self] in
+            withAnimation {
+                self?.attemptingLogin = false
+            }
+        }
     }
 }

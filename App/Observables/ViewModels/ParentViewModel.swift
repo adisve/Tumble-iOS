@@ -30,7 +30,6 @@ final class ParentViewModel: ObservableObject {
     let popupFactory: PopupFactory = .shared
     let appController: AppController = .shared
     
-    @Published var authSchoolId: Int = -1
     @Published var userNotOnBoarded: Bool = false
     @Published var updateAttempted: Bool = false
     @Published var showingOneTimePopup: Bool = false
@@ -90,15 +89,13 @@ final class ParentViewModel: ObservableObject {
     /// Initializes any data publishers in order to register changes to comonly
     /// used variables across the app
     private func setupPublishers() {
-        let authSchoolIdPublisher = preferenceService.$authSchoolId.receive(on: RunLoop.main)
         let onBoardingPublisher = preferenceService.$userOnBoarded.receive(on: RunLoop.main)
         let networkConnectionPublisher = networkController.$connected.receive(on: RunLoop.main)
         
-        Publishers.CombineLatest3(authSchoolIdPublisher, onBoardingPublisher, networkConnectionPublisher)
-            .sink { [weak self] authSchoolId, userOnBoarded, connected in
+        Publishers.CombineLatest(onBoardingPublisher, networkConnectionPublisher)
+            .sink { [weak self] userOnBoarded, connected in
                 guard let self = self else { return }
                 self.userNotOnBoarded = !userOnBoarded
-                self.authSchoolId = authSchoolId
 
                 if connected && self.updateShouldOccur() && !appController.isUpdatingBookmarks && !updateAttempted {
                     AppLogger.shared.debug("Updating all bookmarks ...")
@@ -201,14 +198,6 @@ final class ParentViewModel: ObservableObject {
         DispatchQueue.global(qos: .userInitiated).async { [weak self] in
             self?.preferenceService.setUserOnboarded()
         }
-    }
-
-
-    /// Checks if a requested update for a school is valid, since some
-    /// schools require authorization for viewing and fetching schedules
-    func validUpdateRequest(schedule: Schedule) -> Bool {
-        let validRequest: Bool = (schedule.requiresAuth && String(authSchoolId) == schedule.schoolId) || !schedule.requiresAuth
-        return validRequest
     }
     
     /// Updates an individual schedule and its course colors.

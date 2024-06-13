@@ -28,7 +28,7 @@ final class AccountViewModel: ObservableObject {
     @Published var error: Response.ErrorMessage? = nil
     @Published var resourceDetailsSheetModel: ResourceDetailSheetModel? = nil
     @Published var examDetailSheetModel: ExamDetailSheetModel? = nil
-    @Published var authSchoolId: Int = -1
+    @Published var activeUser: TumbleUser? = nil
     @Published var autoSignupEnabled: Bool = false
     
     private var resourceSectionDataTask: URLSessionDataTask? = nil
@@ -45,8 +45,8 @@ final class AccountViewModel: ObservableObject {
         return userController.user?.username
     }
     
-    var schoolName: String {
-        return schools.first(where: { $0.id == authSchoolId})?.name ?? ""
+    var schoolName: String? {
+        return userController.user?.school.name
     }
     
     /// AccountViewModel is responsible for instantiating
@@ -76,15 +76,15 @@ final class AccountViewModel: ObservableObject {
     
     private func setupPublishers() {
         let authStatusPublisher = userController.$authStatus.receive(on: RunLoop.main)
-        let authSchoolIdPublisher = preferenceService.$authSchoolId.receive(on: RunLoop.main)
         let autoSignupPublisher = preferenceService.$autoSignupEnabled.receive(on: RunLoop.main)
+        let userPublisher = userController.$user.receive(on: RunLoop.main)
         
-        Publishers.CombineLatest3(authStatusPublisher, authSchoolIdPublisher, autoSignupPublisher)
-            .sink { [weak self] authStatus, authSchoolId, autoSignupEnabled in
-                guard let self else { return }
+        Publishers.CombineLatest3(authStatusPublisher, autoSignupPublisher, userPublisher)
+            .sink { [weak self] authStatus, autoSignupEnabled, newUser in
+                guard let newUser = newUser, let self else { return }
                 DispatchQueue.main.async {
                     self.authStatus = authStatus
-                    self.authSchoolId = authSchoolId
+                    self.activeUser = newUser
                     self.autoSignupEnabled = autoSignupEnabled
                 }
                 if authStatus == .authorized && !self.registeredForExams && self.autoSignupEnabled {
@@ -145,7 +145,6 @@ final class AccountViewModel: ObservableObject {
     func logOut() async {
         do {
             try await userController.logOut()
-            preferenceService.removeMostRecentUser()
             await notificationManager.cancelNotifications(with: "Booking")
         } catch {
             AppLogger.shared.error("Failed to log out user: \(error)")
@@ -156,14 +155,20 @@ final class AccountViewModel: ObservableObject {
         }
     }
     
-    /// Retrieves user events for resource section in `UserOverview`
+    /// A user is required to not be nil in this viewmodel in order
+    /// for subsequent requests to not fail.
+    /// -----------------------------------------------------------------
+    
+    /// Retrieves user events for resource section in `UserOverview`.
     func getUserEventsForSection() async {
         DispatchQueue.main.async { [weak self] in
             self?.registeredEventSectionState = .loading
         }
         
         do {
-            let request = Endpoint.userEvents(schoolId: String(authSchoolId))
+            guard let user = self.activeUser else { return }
+            
+            let request = Endpoint.userEvents(schoolId: String(user.school.id))
             let events: Response.KronoxCompleteUserEvent? = try await kronoxManager.get(
                 request, refreshToken: userController.refreshToken?.value, sessionDetails: userController.sessionDetails?.value)
             DispatchQueue.main.async { [weak self] in
@@ -185,7 +190,9 @@ final class AccountViewModel: ObservableObject {
         }
         
         do {
-            let request = Endpoint.userBookings(schoolId: String(authSchoolId))
+            guard let user = self.activeUser else { return }
+            
+            let request = Endpoint.userBookings(schoolId: String(user.school.id))
             let bookings: Response.KronoxUserBookings = try await kronoxManager.get(
                 request, refreshToken: userController.refreshToken?.value, sessionDetails: userController.sessionDetails?.value)
             DispatchQueue.main.async {
@@ -205,7 +212,9 @@ final class AccountViewModel: ObservableObject {
     /// as well as the locally stored object
     func unregisterForEvent(eventId: String) async {
         do {
-            let request = Endpoint.unregisterEvent(eventId: eventId, schoolId: String(authSchoolId))
+            guard let user = self.activeUser else { return }
+            
+            let request = Endpoint.unregisterEvent(eventId: eventId, schoolId: String(user.school.id))
             let _ : Response.Empty = try await kronoxManager.put(
                 request,
                 refreshToken: userController.refreshToken?.value,
@@ -247,7 +256,9 @@ final class AccountViewModel: ObservableObject {
         }
         
         do {
-            let request = Endpoint.userBookings(schoolId: String(authSchoolId))
+            guard let user = self.activeUser else { return }
+            
+            let request = Endpoint.userBookings(schoolId: String(user.school.id))
             let bookings: Response.KronoxUserBookings = try await kronoxManager.get(
                 request, refreshToken: userController.refreshToken?.value, sessionDetails: userController.sessionDetails?.value)
             Task {
@@ -285,7 +296,9 @@ final class AccountViewModel: ObservableObject {
     func registerAutoSignup() async {
         AppLogger.shared.debug("Attempting to automatically sign up for exams")
         do {
-            let request = Endpoint.registerAllEvents(schoolId: String(authSchoolId))
+            guard let user = self.activeUser else { return }
+            
+            let request = Endpoint.registerAllEvents(schoolId: String(user.school.id))
             let _: Response.KronoxEventRegistration?
             = try await kronoxManager.put(
                 request, refreshToken: userController.refreshToken?.value,

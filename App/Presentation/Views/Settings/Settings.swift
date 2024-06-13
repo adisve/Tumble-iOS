@@ -52,9 +52,10 @@ struct Settings: View {
                         leadingIcon: "person",
                         leadingIconBackgroundColor: .yellow,
                         destination: AnyView(AccountsSettings(
-                            currentUser: $viewModel.currentUser,
-                            accountList: $viewModel.allUserAccounts,
-                            changeUser: viewModel.changeUser))
+                            currentUser: $viewModel.currentUserName,
+                            accountDict: $viewModel.allUserAccounts,
+                            changeUser: viewModel.changeUser,
+                            onDeleteAccount: onDeleteAccount))
                     )
                     Divider()
                     SettingsNavigationButton(
@@ -126,6 +127,9 @@ struct Settings: View {
         .navigationBarTitleDisplayMode(.inline)
     }
     
+    func onDeleteAccount(for username: String) {
+        viewModel.removeUserAccount(username: username)
+    }
     
     fileprivate func rescheduleNotifications(previousOffset: Int, newOffset: Int) {
         viewModel.rescheduleNotifications(previousOffset: previousOffset, newOffset: newOffset)

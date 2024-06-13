@@ -10,58 +10,45 @@ import SwiftUI
 
 class PreferenceService {
     @Published var userOnBoarded: Bool = false
-    @Published var authSchoolId: Int = -1
     @Published var autoSignupEnabled: Bool = false
-    @Published var mostRecentUser: String? = nil
-    @Published var allUserAccounts: [String] = []
+    @Published var allUserAccounts: [String:Int] = [:]
     
     init() {
-        authSchoolId = getDefaultAuthSchool() ?? -1
         userOnBoarded = isKeyPresentInUserDefaults(key: StoreKey.userOnboarded.rawValue)
         autoSignupEnabled = getAutoSignup()
-        mostRecentUser = getLastUser()
         allUserAccounts = getAllUserAccounts()
     }
     
     // ----------- SET -----------
-    func setAuthSchool(id: Int) {
-        authSchoolId = id
-        UserDefaults.standard.set(id, forKey: StoreKey.authSchool.rawValue)
-        UserDefaults.standard.synchronize()
-    }
     
-    func setUserAccount(username: String) {
-        var allUserAccounts = UserDefaults.standard.array(forKey: StoreKey.allUserAccounts.rawValue) as? [String] ?? []
+    func setUserAccount(username: String, authSchoolId: Int) {
+        var allUserAccounts = UserDefaults.standard.dictionary(forKey: StoreKey.allUserAccounts.rawValue) as? [String:Int] ?? [String:Int]()
         
-        allUserAccounts.append(username)
+        allUserAccounts[username] = authSchoolId
         UserDefaults.standard.set(allUserAccounts, forKey: StoreKey.allUserAccounts.rawValue)
         UserDefaults.standard.synchronize()
+        
+        self.allUserAccounts = allUserAccounts
     }
     
     func updateMostRecentUser(to username: String) {
-        defer {
-            UserDefaults.standard.synchronize()
-            mostRecentUser = username
-        }
-        
-        if var allUserAccounts = UserDefaults.standard.array(forKey: StoreKey.allUserAccounts.rawValue) as? [String] {
-            if let index = allUserAccounts.firstIndex(of: username) {
-                allUserAccounts.remove(at: index)
-                allUserAccounts.append(username)
-                UserDefaults.standard.set(allUserAccounts, forKey: StoreKey.allUserAccounts.rawValue)
-                
-                self.allUserAccounts = allUserAccounts
-            } else {
-                allUserAccounts.append(username)
-                UserDefaults.standard.set(allUserAccounts, forKey: StoreKey.allUserAccounts.rawValue)
-                
-                self.allUserAccounts = allUserAccounts
-            }
-        } else {
-            let newAllUserAccounts = [username]
-            UserDefaults.standard.set(newAllUserAccounts, forKey: StoreKey.allUserAccounts.rawValue)
+        UserDefaults.standard.set(username, forKey: StoreKey.lastUser.rawValue)
+        UserDefaults.standard.synchronize()
+        AppLogger.shared.info("Updated user to \(username)")
+    }
+    
+    func removeUserAccount(username: String) {
+        if var allUserAccounts = UserDefaults.standard.dictionary(forKey: StoreKey.allUserAccounts.rawValue) as? [String:Int] {
+            allUserAccounts.removeValue(forKey: username)
+            UserDefaults.standard.set(allUserAccounts, forKey: StoreKey.allUserAccounts.rawValue)
+            self.allUserAccounts = allUserAccounts
             
-            self.allUserAccounts = newAllUserAccounts
+            if username == getLastUser(), let newUser = allUserAccounts.first?.key {
+                updateMostRecentUser(to: newUser)
+            }
+            
+            UserDefaults.standard.synchronize()
+            self.allUserAccounts = allUserAccounts
         }
     }
 
@@ -69,13 +56,12 @@ class PreferenceService {
         let userDefaults = UserDefaults.standard
         let allUserAccountsKey = StoreKey.allUserAccounts.rawValue
 
-        if var allUserAccounts = userDefaults.array(forKey: allUserAccountsKey) as? [String] {
-            if !allUserAccounts.isEmpty {
-                allUserAccounts.removeLast()
-
+        if var allUserAccounts = userDefaults.dictionary(forKey: allUserAccountsKey) as? [String:Int] {
+            if !allUserAccounts.isEmpty, let lastUser = getLastUser() {
+                allUserAccounts.removeValue(forKey: lastUser)
                 userDefaults.set(allUserAccounts, forKey: allUserAccountsKey)
 
-                if let newMostRecentUser = allUserAccounts.last {
+                if let newMostRecentUser = allUserAccounts.first?.key {
                     userDefaults.set(newMostRecentUser, forKey: StoreKey.lastUser.rawValue)
                 } else {
                     userDefaults.removeObject(forKey: StoreKey.lastUser.rawValue)
@@ -136,12 +122,11 @@ class PreferenceService {
     }
     
     func getLastUser() -> String? {
-        let allUserAccounts = UserDefaults.standard.array(forKey: StoreKey.allUserAccounts.rawValue) as? [String] ?? []
-        return allUserAccounts.last
+        return UserDefaults.standard.string(forKey: StoreKey.lastUser.rawValue)
     }
     
-    func getAllUserAccounts() -> [String] {
-        return UserDefaults.standard.array(forKey: StoreKey.allUserAccounts.rawValue) as? [String] ?? []
+    func getAllUserAccounts() -> [String:Int] {
+        return UserDefaults.standard.dictionary(forKey: StoreKey.allUserAccounts.rawValue) as? [String:Int] ?? [String:Int]()
     }
     
     func getLastUpdated() -> Date? {
@@ -163,16 +148,10 @@ class PreferenceService {
         return ViewType.allCases[viewType]
     }
     
-    func getDefaultAuthSchoolName(schools: [School]) -> String {
-        return schools.first(where: { $0.id == authSchoolId })!.name
-    }
-    
-    func getDefaultAuthSchool() -> Int? {
-        let id: Int = UserDefaults.standard.object(forKey: StoreKey.authSchool.rawValue) as? Int ?? -1
-        if id == -1 {
-            return nil
-        }
-        return id
+    func getAuthSchoolForUsername(_ username: String) -> Int? {
+        let userAccounts = getAllUserAccounts()
+        print(userAccounts)
+        return userAccounts[username]
     }
     
     func getNotificationOffset() -> Int {

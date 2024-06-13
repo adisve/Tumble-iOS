@@ -11,8 +11,16 @@ class PopupFactory {
     
     static let shared = PopupFactory()
     
+    func accountAlreadyExists() -> Popup {
+        Popup(
+            type: .info,
+            title: NSLocalizedString("Account", comment: ""),
+            message: NSLocalizedString("Account aready registered", comment: "")
+        )
+    }
+    
     func setNotificationsAllEventsSuccess() -> Popup {
-        Popup (
+        Popup(
             type: .success,
             title: NSLocalizedString("Scheduled notifications", comment: ""),
             message: NSLocalizedString("Scheduled notifications for all available events", comment: "")

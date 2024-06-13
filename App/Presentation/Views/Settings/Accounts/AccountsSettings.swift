@@ -6,36 +6,34 @@
 //
 
 import SwiftUI
+import SwipeActions
 
 struct AccountsSettings: View {
     @Binding var currentUser: String?
-    @Binding var accountList: [String]
+    @Binding var accountDict: [String:Int]
     let changeUser: (String) -> Void
+    let onDeleteAccount: (String) -> Void
     
     var body: some View {
-        if !accountList.isEmpty {
+        if !accountDict.isEmpty {
             SettingsList {
                 SettingsListGroup {
-                    if !accountList.isEmpty {
-                        ForEach(accountList, id: \.self) { user in
-                            SettingsRadioButton(
-                                title: user,
-                                isSelected: Binding<Bool>(
-                                    get: { user == currentUser },
-                                    set: { selected in
-                                        if selected {
-                                            currentUser = user
-                                            changeUser(user)
-                                        }
+                    ForEach(accountDict.sorted(by: { $0.key > $1.key }), id: \.key) { key, value in
+                        SettingsRadioButton(
+                            title: key,
+                            isSelected: Binding<Bool>(
+                                get: { key == currentUser },
+                                set: { selected in
+                                    if selected {
+                                        currentUser = key
+                                        changeUser(key)
                                     }
-                                )
+                                }
                             )
-                            if user != accountList.last {
-                                Divider()
-                            }
+                        )
+                        if key != accountDict.keys.sorted(by: >).last {
+                            Divider()
                         }
-                    } else {
-                        
                     }
                 }
             }
@@ -44,3 +42,4 @@ struct AccountsSettings: View {
         }
     }
 }
+

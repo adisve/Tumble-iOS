@@ -10,9 +10,11 @@ import Foundation
 class TumbleUser: Decodable, Encodable {
     var username: String
     var name: String
+    var school: School
     
-    init(username: String, name: String) {
+    init(username: String, name: String, school: School) {
         self.username = username
         self.name = name
+        self.school = school
     }
 }

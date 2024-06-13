@@ -20,9 +20,9 @@ class AuthManager {
         case requestError
     }
 
-    func loginUser(authSchoolId: Int, user: NetworkRequest.KronoxUserLogin) async throws -> TumbleUser {
-        let urlRequest = try createLoginRequest(authSchoolId: authSchoolId, user: user)
-        return try await performLoginRequest(urlRequest, with: user)
+    func loginUser(user: NetworkRequest.KronoxUserLogin, school: School) async throws -> TumbleUser {
+        let urlRequest = try createLoginRequest(authSchoolId: school.id, user: user)
+        return try await performLoginRequest(urlRequest, with: user, school: school)
     }
     
     func logOutUser(username: String) async throws {
@@ -55,7 +55,11 @@ class AuthManager {
         )
     }
 
-    private func performLoginRequest(_ urlRequest: URLRequest, with user: NetworkRequest.KronoxUserLogin) async throws -> TumbleUser {
+    private func performLoginRequest(
+        _ urlRequest: URLRequest,
+        with user: NetworkRequest.KronoxUserLogin,
+        school: School
+    ) async throws -> TumbleUser {
         let (data, response) = try await urlSession.data(for: urlRequest)
         guard let httpResponse = response as? HTTPURLResponse, httpResponse.statusCode == 200 else {
             throw AuthError.httpResponseError
@@ -64,7 +68,7 @@ class AuthManager {
         try await storeUpdatedTokensIfNeeded(from: httpResponse, username: user.username)
         let kronoxUser = try decodeKronoxUser(from: data)
 
-        return TumbleUser(username: kronoxUser.username, name: kronoxUser.name)
+        return TumbleUser(username: kronoxUser.username, name: kronoxUser.name, school: school)
     }
 
     private func performAutoLoginRequest(_ urlRequest: URLRequest, with user: TumbleUser) async throws -> TumbleUser {
@@ -72,6 +76,8 @@ class AuthManager {
             let (data, response) = try await urlSession.data(for: urlRequest)
             
             if let statusCode = (response as? HTTPURLResponse)?.statusCode, statusCode > 299 {
+                AppLogger.shared.info("Username: \(user.username), name \(user.name)")
+                AppLogger.shared.info("Status code \(statusCode) received")
                 try await logOutUser(username: user.username)
                 throw AuthError.httpResponseError
             }
@@ -79,13 +85,13 @@ class AuthManager {
             try await storeUpdatedTokensIfNeeded(from: response as? HTTPURLResponse, username: user.username)
             let kronoxUser = try decodeKronoxUser(from: data)
 
-            return TumbleUser(username: user.username, name: kronoxUser.name)
+            return TumbleUser(username: user.username, name: kronoxUser.name, school: user.school)
         } catch {
             if Network.shared.connected {
                 try await logOutUser(username: user.username)
                 throw AuthError.requestError
             }
-            throw AuthError.autoLoginError(user: user) /// Show latest stored user info
+            throw AuthError.autoLoginError(user: user)
         }
     }
 
@@ -127,7 +133,11 @@ class AuthManager {
     /// Fetch most recent user object based on the username
     /// that is passed
     func getUser(username: String) async -> TumbleUser? {
-        guard let data = try? await keychainManager.readKeyChain(for: "\(username)-tumble-user", account: "Tumble for Kronox"),
+        AppLogger.shared.info("Attempting to get user object for \(username)")
+        let service = "\(username)-tumble-user"
+        let account = "\(username)-account"
+        
+        guard let data = try? await keychainManager.readKeyChain(for: service, account: account),
               let user = try? JSONDecoder().decode(TumbleUser.self, from: data) else {
             AppLogger.shared.info("Could not decode Tumble user")
             return nil
@@ -138,26 +148,35 @@ class AuthManager {
     /// Fetch most recent token based on its type and the specific username
     /// related to that token
     func getToken(_ tokenType: TokenType, username: String) async -> Token? {
-        guard let data = try? await keychainManager.readKeyChain(for: "\(username)-\(tokenType.rawValue)", account: "Tumble for Kronox"),
+        AppLogger.shared.info("Attempting to get user token for \(username)")
+        let service = "\(username)-\(tokenType.rawValue)"
+        let account = "\(username)-account"
+        
+        guard let data = try? await keychainManager.readKeyChain(for: service, account: account),
               let token = try? JSONDecoder().decode(Token.self, from: data) else {
             AppLogger.shared.info("Could not decode token")
             return nil
         }
         return token
     }
-    
-    
+
     /// Save decoded user object to keychain based on the given username to
     /// allow for multiple user accounts to be saved on the same device
     func setUser(_ newUser: TumbleUser?) async throws {
         guard let newUser = newUser, let data = try? JSONEncoder().encode(newUser) else { return }
-        try await keychainManager.saveKeyChain(data, for: "\(newUser.username)-tumble-user", account: "Tumble for Kronox")
+        let service = "\(newUser.username)-tumble-user"
+        let account = "\(newUser.username)-account"
+        AppLogger.shared.info("Saving user in \(service)")
+        try await keychainManager.saveKeyChain(data, for: service, account: account)
     }
 
     /// Save decoded user token to keychain based on the given username to
     /// allow for multiple user account tokens to be saved on the same device
     func setToken(_ newToken: Token?, for tokenType: TokenType, username: String) async throws {
         guard let newToken = newToken, let data = try? JSONEncoder().encode(newToken) else { return }
-        try await keychainManager.saveKeyChain(data, for: "\(username)-\(tokenType.rawValue)", account: "Tumble for Kronox")
+        let service = "\(username)-\(tokenType.rawValue)"
+        let account = "\(username)-account"
+        AppLogger.shared.info("Saving token in \(service)")
+        try await keychainManager.saveKeyChain(data, for: service, account: account)
     }
 }

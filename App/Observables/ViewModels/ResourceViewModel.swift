@@ -23,14 +23,26 @@ final class ResourceViewModel: ObservableObject {
     @Published var resourceBookingPageState: GenericPageStatus = .loading
     @Published var eventBookingPageState: GenericPageStatus = .loading
     @Published private var getBookingsTask: Task<Void, Never>? = nil
+    @Published var activeUser: TumbleUser? = nil
     @Published var selectedPickerDate: Date = .now {
         willSet {
             willSetBookingDate(for: newValue)
         }
     }
     
-    lazy var authSchoolId: Int = preferenceService.authSchoolId
+    private var cancellables = Set<AnyCancellable>()
     
+    init() {
+        let userPublisher = userController.$user.receive(on: RunLoop.main)
+        
+        userPublisher.sink { [weak self] user in
+            if let user = user {
+                self?.activeUser = user
+            }
+        }
+        .store(in: &cancellables)
+    }
+        
     /// When a user presses a date in the `ResourceDatePicker`
     /// and waits for any available resources for this date
     func willSetBookingDate(for newDate: Date) {
@@ -54,7 +66,8 @@ final class ResourceViewModel: ObservableObject {
             self.eventBookingPageState = .loading
         }
         do {
-            let request = Endpoint.userEvents(schoolId: String(authSchoolId))
+            guard let user = self.activeUser else { return }
+            let request = Endpoint.userEvents(schoolId: String(user.school.id))
             guard let refreshToken = userController.refreshToken else {
                 return
             }
@@ -82,7 +95,8 @@ final class ResourceViewModel: ObservableObject {
         }
         
         do {
-            let request = Endpoint.registerEvent(eventId: eventId, schoolId: String(authSchoolId))
+            guard let user = self.activeUser else { return }
+            let request = Endpoint.registerEvent(eventId: eventId, schoolId: String(user.school.id))
             guard let refreshToken = userController.refreshToken else {
                 return
             }
@@ -105,7 +119,8 @@ final class ResourceViewModel: ObservableObject {
         }
         
         do {
-            let request = Endpoint.unregisterEvent(eventId: eventId, schoolId: String(authSchoolId))
+            guard let user = self.activeUser else { return }
+            let request = Endpoint.unregisterEvent(eventId: eventId, schoolId: String(user.school.id))
             guard let refreshToken = userController.refreshToken else {
                 return
             }
@@ -131,7 +146,8 @@ final class ResourceViewModel: ObservableObject {
         }
         
         do {
-            let request = Endpoint.allResources(schoolId: String(authSchoolId), date: date)
+            guard let user = self.activeUser else { return }
+            let request = Endpoint.allResources(schoolId: String(user.school.id), date: date)
             guard let refreshToken = userController.refreshToken else {
                 return
             }
@@ -154,7 +170,8 @@ final class ResourceViewModel: ObservableObject {
     /// the `Resources` view.
     func confirmResource(resourceId: String, bookingId: String) async {
         do {
-            let request = Endpoint.confirmResource(schoolId: String(authSchoolId))
+            guard let user = self.activeUser else { return }
+            let request = Endpoint.confirmResource(schoolId: String(user.school.id))
             let requestBody = NetworkRequest.ConfirmKronoxResource(
                 resourceId: resourceId,
                 bookingId: bookingId
@@ -178,7 +195,8 @@ final class ResourceViewModel: ObservableObject {
         availabilityValue: Response.AvailabilityValue
     ) async -> Bool {
         do {
-            let request = Endpoint.bookResource(schoolId: String(authSchoolId))
+            guard let user = self.activeUser else { return false }
+            let request = Endpoint.bookResource(schoolId: String(user.school.id))
             let requestBody = NetworkRequest.BookKronoxResource(
                 resourceId: resourceId,
                 date: isoDateFormatterFract.string(from: date),
@@ -201,7 +219,8 @@ final class ResourceViewModel: ObservableObject {
     /// Unbooking is done through the `.bookingId` parameter on the booking object.
     func unbookResource(bookingId: String) async -> Bool {
         do {
-            let request: Endpoint = .unbookResource(schoolId: String(authSchoolId), bookingId: bookingId)
+            guard let user = self.activeUser else { return false }
+            let request: Endpoint = .unbookResource(schoolId: String(user.school.id), bookingId: bookingId)
             guard let refreshToken = userController.refreshToken else {
                 return false
             }

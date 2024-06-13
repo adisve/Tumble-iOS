@@ -17,7 +17,8 @@ struct UserOverview: View {
         VStack {
             HStack {
                 if let name = viewModel.userDisplayName,
-                   let username = viewModel.username
+                   let username = viewModel.username,
+                    let schoolName = viewModel.schoolName
                 {
                     UserAvatar(name: name, collapsedHeader: $collapsedHeader)
                         .padding(.trailing, 5)
@@ -27,7 +28,7 @@ struct UserOverview: View {
                         if !collapsedHeader {
                             Text(username)
                                 .font(.system(size: 16, weight: .regular))
-                            Text(viewModel.schoolName)
+                            Text(schoolName)
                                 .font(.system(size: 14, weight: .semibold))
                                 .padding(.top, 10)
                         }

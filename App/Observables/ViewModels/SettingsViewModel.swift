@@ -12,6 +12,7 @@ import SwiftUI
 
 final class SettingsViewModel: ObservableObject {
     @Inject var preferenceService: PreferenceService
+    @Inject var userController: UserController
     @Inject var notificationManager: NotificationManager
     @Inject var schoolManager: SchoolManager
     @Inject var realmManager: RealmManager
@@ -20,10 +21,8 @@ final class SettingsViewModel: ObservableObject {
     @Published var presentSidebarSheet: Bool = false
     @Published var authStatus: AuthStatus = .unAuthorized
     
-    @Published var currentUser: String? = nil
-    @Published var allUserAccounts: [String] = []
-    @Published var authSchoolId: Int = -1
-    @Published var schoolName: String = ""
+    @Published var currentUserName: String? = nil
+    @Published var allUserAccounts: [String:Int] = [String:Int]()
     
     let popupFactory: PopupFactory = PopupFactory.shared
     private lazy var schools: [School] = schoolManager.getSchools()
@@ -36,24 +35,13 @@ final class SettingsViewModel: ObservableObject {
     private func setUpDataPublishers() {
         DispatchQueue.global(qos: .userInitiated).async { [weak self] in
             guard let self else { return }
-            let schoolIdPublisher = self.preferenceService.$authSchoolId.receive(on: RunLoop.main)
-            let currentUserPublisher = self.preferenceService.$mostRecentUser.receive(on: RunLoop.main)
             let allUserAccountsPublisher = preferenceService.$allUserAccounts.receive(on: RunLoop.main)
-
-            currentUserPublisher
-                .removeDuplicates()
-                .sink { user in
-                    if let user = user {
-                        self.currentUser = user
-                    }
-                }
-                .store(in: &cancellables)
+            let currentUserPublisher = userController.$user.receive(on: RunLoop.main)
             
-            schoolIdPublisher
-                .removeDuplicates()
-                .sink { schoolId in
-                    self.authSchoolId = schoolId
-                    self.schoolName = self.schools.first(where: { $0.id == schoolId })?.name ?? ""
+            Publishers.CombineLatest(allUserAccountsPublisher, currentUserPublisher)
+                .sink { allUserAccounts, currentUser in
+                    self.allUserAccounts = allUserAccounts
+                    self.currentUserName = currentUser?.username
                 }
                 .store(in: &cancellables)
             
@@ -66,8 +54,18 @@ final class SettingsViewModel: ObservableObject {
         }
     }
     
+    func removeUserAccount(username: String) {
+        Task.detached(priority: .userInitiated) { [weak self] in
+            try await self?.userController.logOut(username: username)
+            self?.preferenceService.removeUserAccount(username: username)
+        }
+    }
+    
     func changeUser(newUser: String) {
-        preferenceService.updateMostRecentUser(to: newUser)
+        Task.detached(priority: .userInitiated) { [weak self] in
+            self?.preferenceService.updateMostRecentUser(to: newUser)
+            await self?.userController.autoLogin()
+        }
     }
     
     func removeNotifications(for id: String, referencing events: [Event]) {
